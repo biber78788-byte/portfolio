@@ -1,454 +1,177 @@
 <!doctype html>
-<html lang="de">
+<html lang="ru" class="dark">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dmitry Web — Online-Terminbuchung für Studios</title>
-<meta name="description" content="Online-Terminbuchung als App für dein Studio — fertig gebaut, live in 2–3 Tagen. Kein Abo, kein Download für deine Kunden. Günstiger als du denkst.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Dmitry Web — Online-Terminbuchung für dein Studio">
-<meta property="og:description" content="Terminbuchung als App, live in 2–3 Tagen. Kein Abo, kein Download für deine Kunden. Launch-Preis 169 € statt 339 €.">
-<meta property="og:image" content="img/og.jpg">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#050506">
-<link rel="icon" type="image/svg+xml" href="logo/dmitryweb-favicon.svg">
-<link rel="apple-touch-icon" href="logo/png/icon-512.png">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#000000" />
+<meta name="description" content="Сайт-визитка с онлайн-записью для салона, барбершопа или студии — 4900 ₽ один раз, без абонплаты. Готов за 2 дня." />
+<title>Дмитрий — сайты с онлайн-записью для салонов · 4900 ₽ разово</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap');
-  * { margin:0; padding:0; box-sizing:border-box; }
-  :root {
-    --bg:#050506; --txt:#f4f4f6; --muted:#9a9aa3; --line:rgba(255,255,255,.10);
-    --card:rgba(22,22,25,.72); --card-2:rgba(28,28,32,.62); --acc:#2f7cf6; --ok:#4ade80;
-    --r:22px;
-  }
-  html { scroll-behavior:smooth; }
-  body { background:var(--bg); color:var(--txt); font-family:'Inter',system-ui,-apple-system,sans-serif; overflow-x:hidden; -webkit-font-smoothing:antialiased; }
-  a { color:inherit; text-decoration:none; }
-  button { font-family:inherit; cursor:pointer; }
-
-  /* ---------- фон ---------- */
-  .bg { position:fixed; inset:0; z-index:-3; background:#050506; }
-  .bg::before { content:""; position:absolute; inset:0; background:url('bg.jpg') center 45% / cover no-repeat; filter:contrast(2.1) brightness(5.5) saturate(1.15); }
-  .bg::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(5,5,6,.06), rgba(5,5,6,.30) 44%, rgba(5,5,6,.70)); }
-  .grid { position:fixed; inset:0; z-index:-2; background-image:radial-gradient(rgba(255,255,255,.07) 1px, transparent 1.4px); background-size:26px 26px; mask-image:radial-gradient(ellipse 80% 60% at 50% 35%, #000 20%, transparent 75%); -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 35%, #000 20%, transparent 75%); opacity:.55; }
-  .orb { position:fixed; border-radius:50%; filter:blur(110px); z-index:-1; opacity:.4; pointer-events:none; will-change:transform; }
-  .orb.a { width:560px; height:560px; background:rgba(47,124,246,.28); left:-12%; top:4%; animation:drift 26s ease-in-out infinite alternate; }
-  .orb.b { width:460px; height:460px; background:rgba(139,92,246,.18); right:-10%; bottom:0%; animation:drift 32s ease-in-out infinite alternate-reverse; }
-  @keyframes drift { from{transform:translate(0,0) scale(1)} to{transform:translate(60px,-40px) scale(1.15)} }
-
-  /* ---------- каркас: блоки во всю ширину, края по общим линиям ---------- */
-  .shell { max-width:none; margin:0; padding:12px 16px; }
-  @media(min-width:900px){ .shell { padding:16px 24px; } }
-  .float {
-    border-radius:28px; border:1px solid rgba(255,255,255,.16);
-    background:linear-gradient(180deg, rgba(18,18,22,.42), rgba(10,10,12,.56));
-    backdrop-filter:blur(18px) saturate(1.2); -webkit-backdrop-filter:blur(18px) saturate(1.2);
-    box-shadow:0 40px 120px rgba(0,0,0,.62), inset 0 1px 0 rgba(255,255,255,.09);
-  }
-  .nav-wrap { position:sticky; top:10px; z-index:50; margin-bottom:16px; }
-  .nav { display:flex; align-items:center; gap:14px; padding:10px 14px; }
-  .brand { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:-.02em; }
-  .mark { width:34px; height:34px; border-radius:11px; display:block; box-shadow:0 8px 24px rgba(216,17,63,.34); }
-  .brand-acc { color:#f0537a; font-weight:800; }
-  .brand small { display:block; font-size:10.5px; font-weight:600; color:var(--muted); letter-spacing:.02em; }
-  .nav .links { display:none; gap:4px; margin-left:auto; }
-  .nav .links a { font-size:13px; color:var(--muted); padding:8px 12px; border-radius:10px; transition:.18s; }
-  .nav .links a:hover { color:var(--txt); background:rgba(255,255,255,.06); }
-  .nav .cta { margin-left:auto; }
-  @media(min-width:800px){ .nav .links { display:flex; } .nav .cta { margin-left:0; } }
-  .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:999px; border:1px solid transparent; padding:11px 18px; font-size:13.5px; font-weight:650; transition:transform .15s, box-shadow .2s, background .2s, border-color .2s; white-space:nowrap; }
-  .btn:hover { transform:translateY(-1px); }
-  .btn-primary { background:var(--acc); color:#fff; box-shadow:0 12px 30px rgba(47,124,246,.35); }
-  .btn-primary:hover { box-shadow:0 16px 40px rgba(47,124,246,.45); }
-  .btn-ghost { border-color:var(--line); background:rgba(255,255,255,.04); color:var(--txt); }
-  .btn-ghost:hover { background:rgba(255,255,255,.08); }
-
-  /* ---------- hero ---------- */
-  .hero { padding:44px 26px 34px; text-align:center; position:relative; overflow:hidden; }
-  @media(min-width:900px){ .hero { padding:64px 64px 46px; } }
-  .badge { display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:600; color:#cfe0ff; background:rgba(47,124,246,.14); border:1px solid rgba(47,124,246,.35); padding:6px 13px; border-radius:999px; }
-  .dot { width:7px; height:7px; border-radius:50%; background:var(--ok); box-shadow:0 0 10px var(--ok); }
-  h1 { font-size:clamp(30px,5.2vw,58px); line-height:1.06; letter-spacing:-.035em; font-weight:800; margin:18px auto 14px; max-width:14ch; }
-  h1 span { background:linear-gradient(100deg,#6ea8ff,#2f7cf6 55%,#8b5cf6); -webkit-background-clip:text; background-clip:text; color:transparent; }
-  .lead { font-size:clamp(14px,1.6vw,17.5px); color:var(--muted); max-width:60ch; margin:0 auto; line-height:1.6; }
-  .hero-cta { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:26px; }
-  .proof { display:flex; flex-wrap:wrap; gap:20px 32px; justify-content:center; margin-top:32px; font-size:12.5px; color:var(--muted); }
-  .proof b { display:block; font-size:20px; color:var(--txt); font-family:'JetBrains Mono',monospace; font-weight:600; }
-
-  /* ---------- фото: hero ---------- */
-  .hero-grid { display:grid; gap:26px; align-items:center; text-align:center; }
-  @media(min-width:900px){
-    .hero-grid { grid-template-columns:1.25fr .75fr; gap:40px; text-align:left; align-items:center; }
-    .hero-grid .lead, .hero-grid h1 { margin-left:0; margin-right:0; }
-    .hero-grid .hero-cta, .hero-grid .proof { justify-content:flex-start; }
-  }
-  .hero-shot { position:relative; border-radius:22px; overflow:hidden; border:1px solid rgba(255,255,255,.16); box-shadow:0 24px 60px rgba(0,0,0,.55); aspect-ratio:16/10; margin:0 auto; width:100%; }
-  @media(min-width:900px){ .hero-shot { aspect-ratio:4/5; } }
-  @media(min-width:1500px){ .hero-shot { aspect-ratio:16/11; } }
-  .hero-shot img { width:100%; height:100%; object-fit:cover; display:block; filter:saturate(.92) contrast(1.05); }
-  .hero-shot::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(47,124,246,.16), transparent 40%, rgba(5,5,6,.35)); }
-  .shot-tag { position:absolute; left:12px; bottom:12px; z-index:2; font-size:10.5px; font-weight:700; color:#fff; background:rgba(5,5,6,.55); border:1px solid rgba(255,255,255,.18); backdrop-filter:blur(8px); border-radius:999px; padding:4px 10px; }
-
-  /* ---------- live phones ---------- */
-  .lives { display:grid; gap:18px; padding:6px 18px 30px; }
-  @media(min-width:860px){ .lives { grid-template-columns:repeat(3,1fr); padding:6px 26px 34px; } }
-  .live { border-radius:var(--r); border:1px solid var(--line); background:var(--card); overflow:hidden; transition:transform .25s, border-color .25s; }
-  .live:hover { transform:translateY(-4px); border-color:rgba(255,255,255,.2); }
-  .live-head { display:flex; align-items:center; gap:10px; padding:13px 14px; border-bottom:1px solid var(--line); }
-  .live-ic { width:30px; height:30px; border-radius:9px; display:grid; place-items:center; font-size:12px; font-weight:800; color:#fff; flex-shrink:0; }
-  .live-t { font-size:13px; font-weight:700; }
-  .live-s { font-size:11px; color:var(--muted); }
-  .live-frame { height:330px; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:none; }
-  .live-frame::-webkit-scrollbar{ display:none; }
-  .live-frame iframe { width:100%; height:100%; border:0; display:block; }
-  .live-foot { display:flex; gap:6px; padding:10px 12px; border-top:1px solid var(--line); }
-  .tag { font-size:10.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:3px 9px; }
-  .live-cover + .live-head { border-bottom:none; }
-
-  /* ---------- фото: галерея ---------- */
-  .gal { display:grid; gap:12px; margin-top:24px; grid-template-columns:repeat(2,1fr); }
-  @media(min-width:860px){ .gal { grid-template-columns:repeat(4,1fr); } }
-  .gal-i { position:relative; border-radius:16px; overflow:hidden; border:1px solid var(--line); background:var(--card-2); margin:0; }
-  .gal-i img { width:100%; aspect-ratio:4/5; object-fit:cover; display:block; transition:transform .6s cubic-bezier(.22,1,.36,1), filter .4s; filter:saturate(.9); }
-  .gal-i:hover img { transform:scale(1.04); filter:saturate(1.05); }
-  .gal-i figcaption { position:absolute; inset:auto 0 0 0; padding:34px 13px 12px; background:linear-gradient(180deg, transparent, rgba(5,5,6,.92)); }
-  .gal-i b { display:block; font-size:12.5px; font-weight:700; margin-bottom:2px; }
-  .gal-i span { font-size:11px; color:#c9c9d1; line-height:1.45; display:block; }
-
-  /* ---------- секции ---------- */
-  section { padding:34px 22px; }
-  @media(min-width:900px){ section { padding:48px 60px; } }
-  .kicker { font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--acc); font-weight:700; }
-  h2 { font-size:clamp(24px,3.2vw,36px); letter-spacing:-.03em; line-height:1.12; font-weight:800; margin:10px 0 12px; }
-  .sub { color:var(--muted); font-size:15px; line-height:1.6; max-width:66ch; }
-  .steps { display:grid; gap:12px; margin-top:26px; }
-  @media(min-width:760px){ .steps { grid-template-columns:repeat(4,1fr); } }
-  .step { background:var(--card-2); border:1px solid var(--line); border-radius:18px; padding:18px 16px; }
-  .num { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--acc); font-weight:600; }
-  .step h3 { font-size:14.5px; margin:8px 0 6px; font-weight:700; }
-  .step p { font-size:12.5px; color:var(--muted); line-height:1.55; }
-
-  .feat { display:grid; gap:12px; margin-top:24px; }
-  @media(min-width:760px){ .feat { grid-template-columns:repeat(3,1fr); } }
-  .fe { display:flex; gap:12px; background:var(--card-2); border:1px solid var(--line); border-radius:16px; padding:16px; }
-  .fe svg { width:19px; height:19px; stroke:var(--acc); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
-  .fe b { display:block; font-size:13.5px; margin-bottom:3px; }
-  .fe span { font-size:12.5px; color:var(--muted); line-height:1.5; }
-
-  /* ---------- цена ---------- */
-  .prices { display:grid; gap:14px; margin-top:26px; }
-  @media(min-width:860px){ .prices { grid-template-columns:repeat(3,1fr); align-items:stretch; } }
-  .price { border-radius:20px; border:1px solid var(--line); background:var(--card); padding:22px; display:flex; flex-direction:column; }
-  .price.hot { border-color:rgba(47,124,246,.55); background:linear-gradient(180deg, rgba(47,124,246,.14), rgba(22,22,25,.8)); box-shadow:0 20px 60px rgba(47,124,246,.18); }
-  .price .pn { font-size:13px; font-weight:700; color:var(--muted); }
-  .price .pp { font-size:40px; font-weight:800; letter-spacing:-.04em; margin:10px 0 2px; }
-  .price .pp small { font-size:14px; font-weight:600; color:var(--muted); letter-spacing:0; }
-  .price .pd { font-size:12.5px; color:var(--muted); margin-bottom:16px; }
-  .price ul { list-style:none; display:flex; flex-direction:column; gap:9px; font-size:13px; color:#d6d6dc; margin-bottom:18px; }
-  .price li { display:flex; gap:9px; align-items:flex-start; line-height:1.4; }
-  .price li::before { content:""; width:15px; height:15px; border-radius:5px; background:rgba(74,222,128,.16); border:1px solid rgba(74,222,128,.5); flex-shrink:0; margin-top:1px; }
-  .price .btn { margin-top:auto; width:100%; }
-
-  /* ---------- отзыв ---------- */
-  .quote { margin-top:22px; border-radius:20px; border:1px solid var(--line); background:var(--card); padding:24px; display:flex; flex-direction:column; gap:20px; }
-  @media(min-width:900px){ .quote { padding:0; flex-direction:row; align-items:stretch; overflow:hidden; } .quote .qbody { padding:30px 34px 30px 34px; } }
-  .quote .qshot { display:none; }
-  @media(min-width:900px){ .quote .qshot { display:block; width:270px; flex-shrink:0; } .quote .qshot img { width:100%; height:100%; object-fit:cover; display:block; filter:saturate(.85) brightness(.92); } }
-  .quote .qbody { padding:0; }
-  @media(min-width:900px){ .quote .qbody { display:flex; flex-direction:column; justify-content:center; } }
-  .quote .stars { color:#e9c46a; font-size:15px; letter-spacing:2px; }
-  .quote p { font-size:clamp(14.5px,1.7vw,17px); line-height:1.65; margin:12px 0 18px; color:#e6e6ea; }
-  .who { display:flex; align-items:center; gap:12px; }
-  .ava { width:40px; height:40px; border-radius:50%; background:linear-gradient(150deg,#3d8bff,#8b5cf6); display:grid; place-items:center; font-weight:800; font-size:14px; }
-  .who b { display:block; font-size:13.5px; }
-  .who span { font-size:12px; color:var(--muted); }
-
-  /* ---------- контакт ---------- */
-  .contact { text-align:center; padding:44px 22px; }
-  .clinks { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:24px; }
-  .clink { display:flex; align-items:center; gap:10px; border:1px solid var(--line); background:var(--card); border-radius:14px; padding:13px 18px; font-size:13.5px; font-weight:600; transition:.2s; }
-  .clink:hover { border-color:rgba(47,124,246,.6); background:rgba(47,124,246,.1); transform:translateY(-2px); }
-  .clink svg { width:17px; height:17px; stroke:var(--acc); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-
-  footer { padding:26px; text-align:center; font-size:11.5px; color:#6f6f78; line-height:1.7; }
-  footer a { color:#8f8f98; border-bottom:1px solid rgba(255,255,255,.15); }
-
-  /* анимация появления */
-
-  /* прячем плашку Netlify внутри встроенных превью */
-  .nf-plate{position:absolute;left:0;right:0;bottom:0;height:44px;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(5,5,6,.92));z-index:3}
-  .live-mask{position:relative}
-  .live-cover{position:relative;height:180px;overflow:hidden;border-bottom:1px solid var(--line)}
-  .live-cover img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.22,1,.36,1);filter:saturate(.95)}
-  .live:hover .live-cover img{transform:scale(1.05)}
-  .live-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(10,10,12,.85))}
-  .live-cover .cover-tag{position:absolute;left:12px;bottom:10px;z-index:2;font-size:10.5px;font-weight:700;color:#fff;background:rgba(5,5,6,.55);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(8px);border-radius:999px;padding:4px 10px;display:inline-flex;align-items:center;gap:6px}
-  .rv { opacity:0; transform:translateY(16px); transition:opacity .55s ease, transform .55s cubic-bezier(.22,1,.36,1); }
-  .rv.in { opacity:1; transform:none; }
-
-  /* stagger для карточек */
-  .rv.in > .live:nth-child(1){animation:pop .6s cubic-bezier(.22,1,.36,1) .05s both}
-  .rv.in > .live:nth-child(2){animation:pop .6s cubic-bezier(.22,1,.36,1) .15s both}
-  .rv.in > .live:nth-child(3){animation:pop .6s cubic-bezier(.22,1,.36,1) .25s both}
-  .rv.in .gal-i:nth-child(1){animation:pop .6s cubic-bezier(.22,1,.36,1) .05s both}
-  .rv.in .gal-i:nth-child(2){animation:pop .6s cubic-bezier(.22,1,.36,1) .12s both}
-  .rv.in .gal-i:nth-child(3){animation:pop .6s cubic-bezier(.22,1,.36,1) .19s both}
-  .rv.in .gal-i:nth-child(4){animation:pop .6s cubic-bezier(.22,1,.36,1) .26s both}
-  .rv.in .step:nth-child(1),.rv.in .fe:nth-child(1){animation:pop .55s cubic-bezier(.22,1,.36,1) .05s both}
-  .rv.in .step:nth-child(2),.rv.in .fe:nth-child(2){animation:pop .55s cubic-bezier(.22,1,.36,1) .12s both}
-  .rv.in .step:nth-child(3),.rv.in .fe:nth-child(3){animation:pop .55s cubic-bezier(.22,1,.36,1) .19s both}
-  .rv.in .step:nth-child(4){animation:pop .55s cubic-bezier(.22,1,.36,1) .26s both}
-  .rv.in .price:nth-child(1){animation:pop .6s cubic-bezier(.22,1,.36,1) .05s both}
-  .rv.in .price:nth-child(2){animation:pop .6s cubic-bezier(.22,1,.36,1) .13s both}
-  .rv.in .price:nth-child(3){animation:pop .6s cubic-bezier(.22,1,.36,1) .21s both}
-  @keyframes pop{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
-
-  /* блик-курсор по кнопкам */
-  .btn,.clink{position:relative;overflow:hidden}
-  .btn::after,.clink::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120px 80px at var(--mx,50%) var(--my,50%),rgba(255,255,255,.18),transparent 65%);opacity:0;transition:opacity .25s}
-  .btn:hover::after,.clink:hover::after{opacity:1}
-
-  /* бегущая рамка у активной цены */
-  @property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
-  .price.hot{position:relative}
-  .price.hot::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;background:conic-gradient(from var(--ang,0deg),rgba(47,124,246,0),rgba(47,124,246,.95),rgba(139,92,246,.65),rgba(47,124,246,0) 55%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 6s linear infinite}
-  @keyframes spin{to{--ang:360deg}}
-
-  /* карточки демо */
-  .live{transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s,border-color .3s}
-  .live:hover{transform:translateY(-6px);box-shadow:0 30px 70px rgba(0,0,0,.55),0 0 0 1px rgba(47,124,246,.35)}
-
-  /* hero: контейнер сразу виден, анимируются только дети */
-  .hero.rv { opacity:1 !important; transform:none !important; }
-  .hero h1{animation:heroIn .9s cubic-bezier(.22,1,.36,1) both}
-  .hero .lead{animation:heroIn .9s cubic-bezier(.22,1,.36,1) .12s both}
-  .hero-cta,.proof{animation:heroIn .9s cubic-bezier(.22,1,.36,1) .24s both}
-  @keyframes heroIn{from{opacity:0;transform:translateY(22px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
-
-  /* бегущая лента */
-  .ticker{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;margin-top:16px}
-  .ticker-in{display:flex;gap:38px;white-space:nowrap;animation:marquee 30s linear infinite;font-size:12px;color:var(--muted);font-weight:600}
-  .ticker-in span{display:inline-flex;align-items:center;gap:8px}
-  .ticker-in b{color:var(--txt)}
-  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-  @media(prefers-reduced-motion:reduce){
-    .rv{opacity:1;transform:none} .orb{animation:none} html{scroll-behavior:auto}
-    .rv.in>.live,.rv.in .step,.rv.in .fe,.rv.in .price,.hero h1,.hero .lead,.hero-cta,.proof,.ticker-in,.price.hot::before{animation:none!important}
-  }
+  :root { --bg:#0b0d12; --card:#141821; --line:#232a38; --text:#e8ebf2; --mut:#8b93a7; --acc:#3b82f6; }
+  * { box-sizing:border-box; margin:0; padding:0 }
+  html { scroll-behavior:smooth }
+  body { background:var(--bg); color:var(--text); font:16px/1.6 Inter,system-ui,'Segoe UI',sans-serif }
+  .wrap { max-width:980px; margin:0 auto; padding:0 20px }
+  header { position:sticky; top:0; z-index:50; backdrop-filter:blur(12px); background:rgba(11,13,18,.82); border-bottom:1px solid var(--line) }
+  .hrow { display:flex; align-items:center; justify-content:space-between; height:60px }
+  .brand { font-weight:800; letter-spacing:-.02em }
+  .brand span { color:var(--acc) }
+  .nav a { color:var(--mut); text-decoration:none; font-size:14px; margin-left:18px }
+  .nav a:hover { color:var(--text) }
+  .cta { background:var(--acc); color:#fff !important; padding:8px 16px; border-radius:10px; font-weight:700 }
+  h1 { font-size:clamp(28px,5vw,44px); font-weight:800; letter-spacing:-.03em; line-height:1.12; margin:56px 0 14px }
+  .lead { color:var(--mut); font-size:18px; max-width:640px }
+  .price-hero { display:inline-flex; align-items:baseline; gap:10px; margin:22px 0 8px }
+  .price-hero b { font-family:'JetBrains Mono',monospace; font-size:34px }
+  .price-hero s { color:var(--mut) }
+  .badge { display:inline-block; background:rgba(59,130,246,.14); border:1px solid rgba(59,130,246,.4); color:#93c5fd; border-radius:999px; padding:4px 12px; font-size:13px; font-weight:600; margin-bottom:14px }
+  .hstats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:34px 0 }
+  .hstat { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px }
+  .hstat b { display:block; font-size:20px; letter-spacing:-.02em }
+  .hstat span { color:var(--mut); font-size:13px }
+  h2 { font-size:24px; font-weight:800; letter-spacing:-.02em; margin:64px 0 6px }
+  .h2sub { color:var(--mut); margin-bottom:22px }
+  .demos { display:grid; grid-template-columns:repeat(3,1fr); gap:16px }
+  .demo { background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden }
+  .demo-head { display:flex; align-items:center; gap:10px; padding:12px 14px }
+  .demo-ic { width:34px; height:34px; border-radius:10px; display:grid; place-items:center; color:#fff; font-size:12px; font-weight:800 }
+  .demo-t { font-weight:700; font-size:14px }
+  .demo-s { color:var(--mut); font-size:12px }
+  .frame { position:relative; height:430px; border-top:1px solid var(--line); background:#fff }
+  .frame iframe { width:100%; height:100%; border:0 }
+  .demo-cta { display:block; text-align:center; padding:10px; color:#93c5fd; text-decoration:none; font-size:13px; border-top:1px solid var(--line) }
+  .demo-cta:hover { background:rgba(59,130,246,.08) }
+  .steps { display:grid; grid-template-columns:repeat(4,1fr); gap:12px }
+  .step { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px }
+  .step b { display:grid; place-items:center; width:26px; height:26px; border-radius:50%; background:var(--acc); color:#fff; font-size:13px; margin-bottom:10px }
+  .step h3 { font-size:15px; margin-bottom:4px }
+  .step p { color:var(--mut); font-size:13px }
+  .plans { display:grid; grid-template-columns:1fr 1fr; gap:16px }
+  .plan { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px }
+  .plan.hot { border-color:var(--acc); box-shadow:0 0 0 1px var(--acc) }
+  .plan h3 { font-size:17px; font-weight:800 }
+  .plan .p { font-family:'JetBrains Mono',monospace; font-size:30px; font-weight:700; margin:10px 0 2px }
+  .plan .ps { color:var(--mut); font-size:13px; margin-bottom:14px }
+  .plan ul { list-style:none; display:grid; gap:8px; font-size:14px }
+  .plan li::before { content:'✓'; color:#4ade80; margin-right:8px; font-weight:700 }
+  .dump { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; margin-top:16px; font-size:14px; color:var(--mut) }
+  .dump b { color:var(--text) }
+  .faq { display:grid; gap:10px }
+  details { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 18px }
+  summary { cursor:pointer; font-weight:700; font-size:15px }
+  details p { color:var(--mut); margin-top:8px; font-size:14px }
+  .final { text-align:center; margin:70px 0 30px }
+  .final .btn { display:inline-block; background:var(--acc); color:#fff; text-decoration:none; font-weight:800; font-size:17px; padding:15px 34px; border-radius:14px }
+  footer { border-top:1px solid var(--line); color:var(--mut); font-size:13px; padding:22px 0 40px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px }
+  footer a { color:#93c5fd; text-decoration:none }
+  @media (max-width:860px){ .demos,.hstats{grid-template-columns:1fr} .steps{grid-template-columns:1fr 1fr} .plans{grid-template-columns:1fr} .frame{height:380px} .nav a:not(.cta){display:none} }
 </style>
 </head>
 <body>
-<div class="bg"></div><div class="grid"></div><div class="orb a"></div><div class="orb b"></div>
-
-<div style="background:linear-gradient(90deg,rgba(74,222,128,.18),rgba(74,222,128,.08));border-bottom:1px solid rgba(74,222,128,.3);padding:10px 20px;text-align:center;font-size:13px;font-weight:700;color:#4ade80;position:relative;z-index:60">
-  ◆ Launch-Angebot: 50 % Rabatt auf alle Tarife — nur diese Woche ◆
-</div>
-
-<div class="shell">
-  <div class="nav-wrap">
-    <nav class="nav float">
-      <a href="#top" class="brand"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="dwm-g" x1="22" y1="4" x2="42" y2="60" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FF6A87"/><stop offset=".45" stop-color="#E01F4E"/><stop offset="1" stop-color="#A6082F"/></linearGradient><linearGradient id="dwm-p" x1="32" y1="0" x2="32" y2="64" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#33363D"/><stop offset="1" stop-color="#202227"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#dwm-p)"/><rect x="20" y="11" width="13.4" height="38.6" fill="url(#dwm-g)"/><rect x="18" y="15.2" width="4" height="32.8" rx="2" fill="#fff" fill-opacity=".18"/><path d="M30 18.15H31.7A13.85 13.85 0 0 1 31.7 45.85H30" fill="none" stroke="#F7F7F9" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34" cy="43.4" r="1.8" fill="#FF8AA0"/></svg><span>Dmitry<span class="brand-acc">Web</span><small>Günstiger als du denkst</small></span></a>
-      <div class="links">
-        <a href="#lives">Live-Demos</a>
-        <a href="#studios">Studios</a>
-        <a href="#how">So funktioniert's</a>
-        <a href="#prices">Preise</a>
-      </div>
-      <a class="btn btn-primary cta" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Demo anfragen</a>
+<header>
+  <div class="wrap hrow">
+    <div class="brand">Дмитрий<span>.</span>Запись</div>
+    <nav class="nav">
+      <a href="#demos">Демки</a>
+      <a href="#how">Как работаем</a>
+      <a href="#price">Цены</a>
+      <a class="cta" href="https://t.me/biberbiber11">Написать</a>
     </nav>
   </div>
+</header>
 
-  <header class="hero float rv" id="top">
-    <div class="hero-grid">
-      <div class="hero-copy">
-        <span class="badge"><span class="dot"></span> 3 Studios live · fertig gebaut, nicht nur versprochen</span>
-        <h1>Online-Terminbuchung für dein Studio. <span>Als App auf dem Handy.</span></h1>
-        <p class="lead">Deine Kunden wählen Leistung, Tag und Uhrzeit selbst — die Buchung landet sofort in deinem Dashboard. Kein Abo, kein Download für deine Kunden. Du bezahlst erst, wenn es dir gefällt.</p>
-        <div class="hero-cta">
-          <a class="btn btn-primary" href="https://detaildemo.netlify.app" target="_blank" rel="noreferrer">Live-Demo ansehen</a>
-          <a class="btn btn-ghost" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Ich baue sie dir nach</a>
-        </div>
-        <div class="proof">
-          <div><b>2–3</b>Tage bis live</div>
-          <div><b>0 €</b>pro Monat</div>
-          <div><b>169 €</b><span style="text-decoration:line-through;color:var(--muted);font-size:14px">339 €</span> Launch-Preis</div>
-          <div><b>EU</b>Hosting &amp; DSGVO</div>
-        </div>
-      </div>
-      <div class="hero-shot">
-        <img src="img/demo-barber-tall.jpg" alt="Barbershop mit Stuhl und Spiegel" width="900" height="1125" fetchpriority="high">
-        <span class="shot-tag">Berlin · Klinge &amp; Kamm</span>
-      </div>
-    </div>
-    <div class="ticker" aria-hidden="true"><div class="ticker-in" id="ticker"></div></div>
-  </header>
+<div class="wrap">
+  <span class="badge">До 30 ноября — 4900 ₽ вместо 5900 ₽</span>
+  <h1>Сайт-визитка с онлайн-записью для вашего салона</h1>
+  <p class="lead">Клиент сам выбирает услугу, день и время — хоть в два ночи. Заявка прилетает вам. Платите <b>один раз</b>, абонплаты нет — страница ваша навсегда.</p>
+  <div class="price-hero"><b>4 900 ₽</b><s>5 900 ₽</s><span style="color:var(--mut);font-size:14px">разово · готово за 2 дня</span></div>
 
-  <section id="lives" class="float rv" style="margin-top:16px">
-    <span class="kicker">Live-Demos</span>
-    <h2>Echte Studios, echte Buchungen</h2>
-    <p class="sub">Alle drei sind keine Screenshots — scrolle direkt in der Vorschau und klicke durch.</p>
-    <div class="lives">
-      <article class="live">
-        <div class="live-cover"><img src="img/demo-detailing.jpg" alt="Autopflege in der Box" loading="lazy" width="900" height="480"><span class="cover-tag"><span class="dot"></span> Live</span></div>
-        <div class="live-head"><span class="live-ic" style="background:#2f7cf6">SD</span><div><div class="live-t">SGX Detailing</div><div class="live-s">München · Autopflege</div></div></div>
-        <div class="live-frame live-mask"><iframe src="https://detaildemo.netlify.app" title="SGX Detailing Demo" loading="lazy"></iframe></div>
-        <div class="live-foot"><span class="tag">Detailing</span><span class="tag">Terminbuchung</span><span class="tag">Live</span></div>
-      </article>
-      <article class="live">
-        <div class="live-cover"><img src="img/demo-barber.jpg" alt="Barbershop mit drei Stühlen" loading="lazy" width="900" height="480"><span class="cover-tag"><span class="dot"></span> Live</span></div>
-        <div class="live-head"><span class="live-ic" style="background:#d4a24e;color:#141414">K</span><div><div class="live-t">Klinge &amp; Kamm</div><div class="live-s">Berlin · Barbershop</div></div></div>
-        <div class="live-frame live-mask"><iframe src="https://barberstudiodemo.netlify.app" title="Barbershop Demo" loading="lazy"></iframe></div>
-        <div class="live-foot"><span class="tag">Barbershop</span><span class="tag">Terminbuchung</span><span class="tag">Live</span></div>
-      </article>
-      <article class="live">
-        <div class="live-cover"><img src="img/demo-tattoo.jpg" alt="Tätowierer bei der Arbeit" loading="lazy" width="900" height="480"><span class="cover-tag"><span class="dot"></span> Live</span></div>
-        <div class="live-head"><span class="live-ic" style="background:#8b5cf6">ST</span><div><div class="live-t">Schwarze Tinte</div><div class="live-s">Hamburg · Tattoostudio</div></div></div>
-        <div class="live-frame live-mask"><iframe src="https://tattoostudemo.netlify.app" title="Tattoo Demo" loading="lazy"></iframe></div>
-        <div class="live-foot"><span class="tag">Tattoo</span><span class="tag">Terminbuchung</span><span class="tag">Live</span></div>
-      </article>
-    </div>
-  </section>
+  <div class="hstats">
+    <div class="hstat"><b>2 дня</b><span>от демки до рабочей записи</span></div>
+    <div class="hstat"><b>0 ₽/мес</b><span>никаких подписок и комиссий</span></div>
+    <div class="hstat"><b>с телефона</b><span>запись открывается как приложение</span></div>
+  </div>
 
-  <section id="studios" class="float rv" style="margin-top:16px">
-    <span class="kicker">Aus der Praxis</span>
-    <h2>So sieht Terminbuchung im Alltag aus</h2>
-    <p class="sub">Ein Abend im Studio, ein Samstag in der Box, ein Kunde mit Handy in der Hand — genau dafür ist die App gebaut.</p>
-    <div class="gal">
-      <figure class="gal-i"><img src="img/g1-detailing.jpg" alt="Fahrzeug beim Waschen" loading="lazy" width="560" height="700"><figcaption><b>Detailing</b><span>Kunde wählt Aufbereitung + Zeitfenster statt Box zu blockieren.</span></figcaption></figure>
-      <figure class="gal-i"><img src="img/g2-salon.jpg" alt="Salon-Stuhl, frei" loading="lazy" width="560" height="700"><figcaption><b>Salon &amp; Barber</b><span>Freie Stühle sind im Kalender sichtbar — gefüllt noch am selben Abend.</span></figcaption></figure>
-      <figure class="gal-i"><img src="img/g3-booking.jpg" alt="Buchung am Handy an der Kasse" loading="lazy" width="560" height="700"><figcaption><b>Buchung</b><span>Kein Download, kein Login — der Link läuft im Browser.</span></figcaption></figure>
-      <figure class="gal-i"><img src="img/g4-tattoo.jpg" alt="Fertig tätowierter Arm" loading="lazy" width="560" height="700"><figcaption><b>Tattoo</b><span>Motiv und Wunschzeit kommen als Formular mit der Buchung.</span></figcaption></figure>
+  <h2 id="demos">Живые демки — потыкайте прямо здесь</h2>
+  <p class="h2sub">Это не картинки: запись в демках работает по-настоящему. Каждый клиент получает свою версию с его услугами и ценами.</p>
+  <div class="demos">
+    <div class="demo">
+      <div class="demo-head"><div class="demo-ic" style="background:#2f7cf6">ГЛ</div><div><div class="demo-t">Детейлинг-студия</div><div class="demo-s">«Глянец», Обнинск</div></div></div>
+      <div class="frame"><iframe src="https://biber78788-byte.github.io/demo-glyanec/" title="Демка детейлинга" loading="lazy"></iframe></div>
+      <a class="demo-cta" href="https://biber78788-byte.github.io/demo-glyanec/" target="_blank" rel="noreferrer">Открыть целиком →</a>
     </div>
-  </section>
+    <div class="demo">
+      <div class="demo-head"><div class="demo-ic" style="background:#d4a24e">БР</div><div><div class="demo-t">Барбершоп</div><div class="demo-s">«Бритва», Подольск</div></div></div>
+      <div class="frame"><iframe src="https://biber78788-byte.github.io/demo-britva/" title="Демка барбершопа" loading="lazy"></iframe></div>
+      <a class="demo-cta" href="https://biber78788-byte.github.io/demo-britva/" target="_blank" rel="noreferrer">Открыть целиком →</a>
+    </div>
+    <div class="demo">
+      <div class="demo-head"><div class="demo-ic" style="background:#8b5cf6">ЧР</div><div><div class="demo-t">Тату-студия</div><div class="demo-s">«Чернила», Рыбинск</div></div></div>
+      <div class="frame"><iframe src="https://biber78788-byte.github.io/demo-chernila/" title="Демка тату" loading="lazy"></iframe></div>
+      <a class="demo-cta" href="https://biber78788-byte.github.io/demo-chernila/" target="_blank" rel="noreferrer">Открыть целиком →</a>
+    </div>
+  </div>
 
-  <section id="how" class="float rv" style="margin-top:16px">
-    <span class="kicker">So funktioniert's</span>
-    <h2>Vier Schritte — und deine Kunden buchen</h2>
-    <div class="steps">
-      <div class="step"><div class="num">01</div><h3>Leistung wählen</h3><p>Dein Kunde öffnet dein Studio als App — ohne Anmeldung, ohne Download.</p></div>
-      <div class="step"><div class="num">02</div><h3>Tag &amp; Uhrzeit</h3><p>Freie Slots in Echtzeit. Blockierte Zeiten sind automatisch gesperrt.</p></div>
-      <div class="step"><div class="num">03</div><h3>Buchung landet im Dashboard</h3><p>Du bestätigst oder sagst ab — mit einem Klick, direkt vom Handy.</p></div>
-      <div class="step"><div class="num">04</div><h3>Du verwaltest selbst</h3><p>Leistungen, Preise und Fotos änderst du jederzeit — ohne mich.</p></div>
-    </div>
-    <div class="feat">
-      <div class="fe"><svg><path d="M12 2 3 7v6c0 5 3.8 8.4 9 9 5.2-.6 9-4 9-9V7l-9-5Z"/><path d="m9 12 2 2 4-4"/></svg><div><b>DSGVO-konform</b><span>Hosting in der EU, Impressum inklusive.</span></div></div>
-      <div class="fe"><svg><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg><div><b>Kein Abo</b><span>Einmalig ab 169 € — keine monatlichen Kosten.</span></div></div>
-      <div class="fe"><svg><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg><div><b>Wünsche per Formular</b><span>Kunden schreiben Motive und Anliegen direkt mit.</span></div></div>
-    </div>
-  </section>
+  <h2 id="how">Как это работает</h2>
+  <p class="h2sub">Четыре шага, оплата — только когда увидите свою версию.</p>
+  <div class="steps">
+    <div class="step"><b>1</b><h3>Демка</h3><p>Скидываю демку под вашу сферу — смотрите с телефона за минуту.</p></div>
+    <div class="step"><b>2</b><h3>Наполнение</h3><p>Присылаете услуги, цены, фото — я собираю вашу версию с вашим названием.</p></div>
+    <div class="step"><b>3</b><h3>Запуск</h3><p>Смотрите готовый сайт, говорите «го». Мелкие правки — на месте.</p></div>
+    <div class="step"><b>4</b><h3>Оплата</h3><p>4900 ₽ переводом на карту после запуска. Дальше — только пользуетесь.</p></div>
+  </div>
 
-  <section id="prices" class="float rv" style="margin-top:16px">
-    <span class="kicker">Preise</span>
-    <h2>Günstiger als du denkst</h2>
-    <p class="sub">Zahlung erst nach deiner Freigabe. Keine Vertragsbindung, keine Provision auf deine Buchungen.</p>
-    <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.4);border-radius:999px;padding:8px 18px;margin-top:14px;font-size:13px;font-weight:700;color:#4ade80">
-      <span style="width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 10px #4ade80;display:inline-block"></span>
-      Launch-Angebot — 50 % Rabatt, nur diese Woche
+  <h2 id="price">Цены</h2>
+  <p class="h2sub">Одна оплата. Без подписок, комиссий с клиентов и «премиум-тарифов».</p>
+  <div class="plans">
+    <div class="plan hot">
+      <h3>Сайт + запись</h3>
+      <div class="p">4 900 ₽</div>
+      <div class="ps">до 30 ноября, потом 5 900 ₽ · адрес вида dmitry-web.ru/ваш-салон</div>
+      <ul>
+        <li>Страница: услуги, цены, фото, контакты</li>
+        <li>Онлайн-запись: клиент выбирает день и время</li>
+        <li>Заявки приходят вам в Telegram</li>
+        <li>Ставится на телефон как приложение</li>
+        <li>Админка: цены и услуги меняете сами</li>
+        <li>Правки в течение месяца — бесплатно</li>
+      </ul>
     </div>
-    <div class="prices" style="margin-top:22px">
-      <div class="price hot">
-        <div class="pn">Studio</div>
-        <div class="pp" style="position:relative;display:inline-flex;align-items:baseline;gap:10px">
-          <span style="font-size:20px;font-weight:600;color:var(--muted);text-decoration:line-through">339 €</span>
-          <span>169 €</span><small> einmalig</small>
-        </div>
-        <div class="pd" style="color:#4ade80;font-weight:600">50 % Rabatt — Launch-Angebot</div>
-        <ul><li>Online-Terminbuchung als App</li><li>Deine Leistungen, Preise &amp; Fotos</li><li>Studio-Dashboard</li><li>DSGVO-konform, EU-Hosting</li></ul>
-        <a class="btn btn-primary" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Demo anfragen — 169 €</a>
-      </div>
-      <div class="price">
-        <div class="pn">Studio + eigene Domain</div>
-        <div class="pp" style="position:relative;display:inline-flex;align-items:baseline;gap:10px">
-          <span style="font-size:20px;font-weight:600;color:var(--muted);text-decoration:line-through">479 €</span>
-          <span>239 €</span><small> einmalig</small>
-        </div>
-        <div class="pd">Mit deinem eigenen Namen statt Testadresse.</div>
-        <ul><li>Alles aus Studio</li><li>Eigene Domain (z. B. deinstudio.de)</li><li>Einrichtung komplett übernommen</li></ul>
-        <a class="btn btn-ghost" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Anfragen</a>
-      </div>
-      <div class="price">
-        <div class="pn">Anpassungen</div>
-        <div class="pp">0 €<small> die ersten 14 Tage</small></div>
-        <div class="pd">Danach kleine Änderungen nach Aufwand.</div>
-        <ul><li>Leistungen &amp; Preise</li><li>Fotos &amp; Texte</li><li>Öffnungszeiten &amp; Blockierungen</li></ul>
-        <a class="btn btn-ghost" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Fragen?</a>
-      </div>
+    <div class="plan">
+      <h3>То же + свой домен</h3>
+      <div class="p">6 900 ₽</div>
+      <div class="ps">до 30 ноября, потом 7 900 ₽</div>
+      <ul>
+        <li>Всё из левого тарифа</li>
+        <li>Домен .ru на ваше имя (nailspb.ru, britva-tver.ru — любые свободные)</li>
+        <li>Свой адрес — легко диктовать клиентам и печатать на визитках</li>
+      </ul>
     </div>
-  </section>
+  </div>
+  <div class="dump">
+    <b>Почему не YCLIENTS и не конструкторы:</b> подписки от ~3 900 ₽/мес — это 46 800 ₽ в год, каждый год. Здесь — 4 900 ₽ <b>один раз</b>. Один записавшийся клиент окупает всю сумму.
+  </div>
 
-  <section class="float rv" style="margin-top:16px">
-    <span class="kicker">Kundenstimme</span>
-    <div class="quote">
-      <div class="qshot"><img src="img/quote-barber.jpg" alt="Werkzeug im Barbershop" loading="lazy" width="520" height="520"></div>
-      <div class="qbody">
-        <div class="stars">★★★★★</div>
-        <p>„Ich hatte ehrlich gesagt nie vor, so etwas zu kaufen — wir hatten den Terminplaner am Telefon und auf Papier. Aber die Demo ließ sich direkt vom Handy öffnen, sah aus wie unser Studio, und am zweiten Tag habe ich es freigegeben. Heute buchen die Leute abends, wenn wir längst zu sind. Der erste Samstag danach war der vollste in diesem Quartal."</p>
-        <div class="who"><span class="ava">TK</span><div><b>T. K.</b><span>Inhaber, Studio in Essen · Betreiber berät sich, Nachname auf Anfrage</span></div></div>
-      </div>
-    </div>
-  </section>
+  <h2>Частые вопросы</h2>
+  <div class="faq">
+    <details><summary>Запись куда приходят заявки?</summary><p>Вам в Telegram мгновенным сообщением: имя, телефон, услуга, дата и время. Дублируются в админке сайта.</p></details>
+    <details><summary>Я смогу сам менять цены?</summary><p>Да, админка простая: цены, услуги, фото и блокировка занятых часов — всё меняется вами за пару минут с телефона.</p></details>
+    <details><summary>А если у меня уже есть сайт?</summary><p>Не нужно переделывать всё — добавлю именно кнопку записи к существующей странице. Обсудим по фото вашего сайта.</p></details>
+    <details><summary>Что если не понравится?</summary><p>Оплата — после того как вы посмотрели свою готовую версию. Не понравилось — расходимся без счёта.</p></details>
+  </div>
 
-  <section class="contact float rv" style="margin-top:16px">
-    <span class="kicker">Kontakt</span>
-    <h2 style="margin-left:auto;margin-right:auto">Reden wir über dein Studio</h2>
-    <p class="sub" style="margin:0 auto">Ich antworte persönlich — meistens innerhalb weniger Stunden.</p>
-    <div class="clinks">
-      <a class="clink" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer"><svg><path d="M21.5 4.5 2.9 11.7c-.8.3-.8 1.4 0 1.7l4.6 1.6 1.7 5.2c.2.7 1.1.9 1.6.3l2.6-2.7 4.6 3.4c.6.4 1.5.1 1.6-.7l2.6-14.9c.1-.8-.7-1.4-1.4-1.1Z"/></svg>Telegram @biberbiber11</a>
-      <a class="clink" href="mailto:dmitry.kuznetsv@gmail.com"><svg><path d="M4 4h16v16H4z"/><path d="m4 6 8 6 8-6"/></svg>dmitry.kuznetsv@gmail.com</a>
-      <a class="clink" href="https://instagram.com/dmitry.kuznetsvv" target="_blank" rel="noreferrer"><svg><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>Instagram @dmitry.kuznetsvv</a>
-    </div>
-  </section>
+  <div class="final">
+    <a class="btn" href="https://t.me/biberbiber11">Написать в Telegram — покажу демку за минуту</a>
+    <p style="color:var(--mut);margin-top:12px;font-size:14px">Отвечаю в течение 15 минут, если не сплю :) · dmitry.kuznetsv@gmail.com</p>
+  </div>
 
   <footer>
-    <p>© 2026 Dmitry Web · Umsatzsteuerfrei gemäß Reverse Charge (§ 13b UStG) für EU-Geschäftskunden.</p>
-    <p>Live-Demos von Referenz-Studios · <a href="https://detaildemo.netlify.app" target="_blank" rel="noreferrer">SGX Detailing</a> · <a href="https://barberstudiodemo.netlify.app" target="_blank" rel="noreferrer">Klinge &amp; Kamm</a> · <a href="https://tattoostudemo.netlify.app" target="_blank" rel="noreferrer">Schwarze Tinte</a></p>
+    <div>Дмитрий — сайты с онлайн-записью · 2026</div>
+    <div><a href="https://t.me/biberbiber11">Telegram @biberbiber11</a></div>
   </footer>
 </div>
-
-<script>
-  /* появление секций */
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.rv').forEach((el) => io.observe(el));
-
-  /* бегущая лента возможностей */
-  const items = [
-    ['Ohne Abo', ''],
-    ['Buchung 24/7', ''],
-    ['DSGVO-konform', ''],
-    ['EU-Hosting', ''],
-    ['Live in 2–3 Tagen', ''],
-    ['Eigene Domain', ''],
-    ['Dashboard inklusive', ''],
-    ['Zahlung nach Freigabe', ''],
-  ];
-  const html = items.map(([t]) => `<span><b>◆</b> ${t}</span>`).join('');
-  const ticker = document.getElementById('ticker');
-  if (ticker) ticker.innerHTML = html + html;
-
-  /* блик следует за курсором */
-  document.querySelectorAll('.btn, .clink').forEach((el) => {
-    el.addEventListener('pointermove', (ev) => {
-      const r = el.getBoundingClientRect();
-      el.style.setProperty('--mx', `${ev.clientX - r.left}px`);
-      el.style.setProperty('--my', `${ev.clientY - r.top}px`);
-    });
-  });
-
-  /* параллакс фона при скролле */
-  const bg = document.querySelector('.bg');
-  let last = 0;
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (bg && !reduce) {
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      if (Math.abs(y - last) < 2) return;
-      last = y;
-      bg.style.transform = `translate3d(0, ${Math.min(y * 0.06, 60)}px, 0)`;
-    }, { passive: true });
-  }
-</script>
 </body>
 </html>
