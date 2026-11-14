@@ -136,6 +136,11 @@
   footer a { color:var(--sec); transition:color .15s cubic-bezier(.22,1,.36,1) }
   footer a:hover { color:var(--text) }
 
+  /* выключка текста на десктопе: широкие абзацы по ширине, с переносами */
+  @media (min-width:901px) {
+    .lead, .h2sub, details p { text-align:justify; hyphens:auto; -webkit-hyphens:auto }
+  }
+
   @media (max-width:1080px) {
     .demos { grid-template-columns:repeat(2, minmax(0,1fr)) }
   }
@@ -147,12 +152,14 @@
     .steps { grid-template-columns:1fr; gap:24px }
     .plans { grid-template-columns:1fr }
     .nav a.lnk { display:none }
+    .btn-nav { height:44px; padding:0 20px }
   }
   @media (max-width:560px) {
     .demos { grid-template-columns:1fr }
     .facts { grid-template-columns:1fr }
     .mosaic { grid-template-columns:1fr 1fr; gap:12px }
     .hero-cta { flex-wrap:wrap }
+    .demo-foot a { padding:8px 0 }
   }
 </style>
 </head>
