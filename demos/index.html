@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#161513" />
+<meta name="description" content="Четыре демки с настоящей онлайн-записью: детейлинг, барбершоп, тату, салон красоты. Запись работает по-настоящему — потыкайте с телефона." />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Живые демки — сайты с онлайн-записью" />
+<meta property="og:description" content="Детйлинг, барбершоп, тату и салон красоты: четыре демки с рабочей записью. Потыкайте — как будто это ваш сайт." />
+<title>Живые демки — сайты с онлайн-записью · Дмитрий</title>
+<link rel="icon" type="image/png" href="logo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg:#161513; --card:#1c1a18; --raised:#262421;
+    --line:rgba(239,233,222,.08); --line-strong:rgba(239,233,222,.16);
+    --text:#efe9de; --sec:#aaa398; --mut:#8a847a;
+    --acc:#e01f4e; --acc-text:#ff6a87; --ok:#4cc38a;
+  }
+  * { box-sizing:border-box; margin:0; padding:0 }
+  html { scroll-behavior:smooth }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto } }
+  body {
+    background:var(--bg); color:var(--text);
+    font:15px/1.6 Inter, system-ui, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a { color:inherit; text-decoration:none }
+  :focus-visible { outline:2px solid var(--acc-text); outline-offset:2px; border-radius:4px }
+  .wrap { max-width:1200px; margin:0 auto; padding:0 24px }
+  .mono { font-family:'JetBrains Mono', monospace; font-variant-numeric:tabular-nums }
+
+  /* ---------- шапка ---------- */
+  header { position:sticky; top:0; z-index:50; backdrop-filter:blur(12px); background:rgba(22,21,19,.86); border-bottom:1px solid var(--line) }
+  .hrow { display:flex; align-items:center; gap:24px; height:64px }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:600 }
+  .brand img { width:28px; height:28px; border-radius:8px; display:block }
+  .brand span b { color:var(--acc-text); font-weight:600 }
+  .nav { display:flex; align-items:center; gap:4px; margin-left:auto }
+  .nav a.lnk { color:var(--sec); font-size:14px; padding:8px 12px; border-radius:8px; transition:color .15s cubic-bezier(.22,1,.36,1), background .15s cubic-bezier(.22,1,.36,1) }
+  .nav a.lnk:hover { color:var(--text); background:var(--raised) }
+  .btn {
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    border-radius:10px; border:1px solid transparent; font:500 14px/1 Inter, sans-serif;
+    cursor:pointer; white-space:nowrap;
+    transition:background .15s cubic-bezier(.22,1,.36,1), border-color .15s cubic-bezier(.22,1,.36,1), transform .12s cubic-bezier(.22,1,.36,1);
+  }
+  .btn:active { transform:scale(.98) }
+  .btn-primary { background:var(--acc); color:#fff; padding:0 20px; height:44px; font-size:15px }
+  .btn-primary:hover { background:#c81440 }
+  .btn-nav { height:36px; padding:0 16px; font-size:14px }
+  .quiet-link { color:var(--acc-text); font-size:14px; font-weight:500; transition:color .15s cubic-bezier(.22,1,.36,1) }
+  .quiet-link:hover { color:#ff8aa0 }
+
+  /* ---------- герой: текст и мозаика обложек ---------- */
+  .hero { padding:64px 0 56px }
+  .hero-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:48px; align-items:center }
+  h1 { font-size:clamp(34px, 5vw, 56px); line-height:1.05; letter-spacing:-.02em; font-weight:500; text-wrap:balance }
+  .lead { color:var(--sec); font-size:17px; line-height:1.6; max-width:32rem; margin-top:16px }
+  .price-hint { display:flex; align-items:baseline; gap:12px; margin-top:24px; color:var(--mut); font-size:14px }
+  .price-hint b { font-family:'JetBrains Mono', monospace; font-variant-numeric:tabular-nums; font-size:22px; font-weight:600; color:var(--text) }
+  .hero-cta { display:flex; align-items:center; gap:16px; margin-top:24px }
+  .mosaic { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:16px }
+  .mosaic a { display:block; border-radius:12px; overflow:hidden; border:1px solid var(--line); background:var(--card); transition:border-color .15s cubic-bezier(.22,1,.36,1) }
+  .mosaic a:hover { border-color:var(--line-strong) }
+  .mosaic img { width:100%; aspect-ratio:1200/630; object-fit:cover; display:block }
+
+  /* ---------- секции ---------- */
+  section { padding:96px 0 0 }
+  h2 { font-size:clamp(24px, 3vw, 32px); line-height:1.15; letter-spacing:-.01em; font-weight:500 }
+  .h2sub { color:var(--sec); margin-top:8px; max-width:36rem }
+
+  /* витрина: четыре живые демки */
+  .demos { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:16px; margin-top:32px }
+  .demo { background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden; transition:border-color .15s cubic-bezier(.22,1,.36,1) }
+  .demo:hover { border-color:var(--line-strong) }
+  .demo-head { display:flex; align-items:center; gap:10px; padding:14px 16px 0 }
+  .demo-head img { width:32px; height:32px; border-radius:8px; display:block }
+  .demo-t { font-size:14px; font-weight:600 }
+  .demo-s { color:var(--mut); font-size:12px; margin-top:2px }
+  .live { display:flex; align-items:center; gap:6px; margin:10px 16px 0; font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--mut) }
+  .live i { width:6px; height:6px; border-radius:50%; background:var(--ok) }
+  .frame { height:420px; margin-top:12px; border-top:1px solid var(--line); background:#0b0d12 }
+  .frame iframe { width:100%; height:100%; border:0; display:block }
+  .demo-foot { display:flex; padding:12px 16px; border-top:1px solid var(--line) }
+  .demo-foot a { color:var(--acc-text); font-size:13px; font-weight:500; display:inline-flex; align-items:center; gap:6px; transition:color .15s cubic-bezier(.22,1,.36,1) }
+  .demo-foot a:hover { color:#ff8aa0 }
+  .demo-foot svg { width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round }
+
+  /* что внутри */
+  .facts { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:32px; margin-top:32px }
+  .fact svg { width:18px; height:18px; stroke:var(--sec); fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round }
+  .fact h3 { font-size:15px; font-weight:500; margin-top:12px }
+  .fact p { color:var(--sec); font-size:14px; margin-top:4px }
+
+  /* шаги */
+  .steps { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:32px; margin-top:32px }
+  .step .num { font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--mut) }
+  .step h3 { font-size:15px; font-weight:500; margin-top:8px }
+  .step p { color:var(--sec); font-size:14px; margin-top:4px }
+
+  /* цены */
+  .plans { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:16px; margin-top:32px; max-width:880px }
+  .plan { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:24px }
+  .plan.hot { border-color:rgba(224,31,78,.45) }
+  .plan h3 { font-size:15px; font-weight:500; color:var(--sec) }
+  .plan .p { font-family:'JetBrains Mono', monospace; font-variant-numeric:tabular-nums; font-size:34px; font-weight:600; letter-spacing:-.01em; margin-top:12px }
+  .plan .ps { color:var(--mut); font-size:13px; margin-top:4px }
+  .plan ul { list-style:none; display:grid; gap:10px; margin-top:20px; font-size:14px; color:var(--sec) }
+  .plan li { display:flex; gap:10px; align-items:flex-start; line-height:1.5 }
+  .plan li svg { width:16px; height:16px; stroke:var(--ok); fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; margin-top:3px }
+  .plan li b { color:var(--text); font-weight:500 }
+
+  /* вопросы */
+  .faq { display:grid; gap:10px; margin-top:32px; max-width:720px }
+  details { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 20px }
+  summary { cursor:pointer; font-size:15px; font-weight:500; list-style:none; display:flex; align-items:center; justify-content:space-between; gap:16px }
+  summary::-webkit-details-marker { display:none }
+  summary::after { content:""; width:16px; height:16px; flex-shrink:0; transform:rotate(90deg); transition:transform .15s cubic-bezier(.22,1,.36,1);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a847a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:center }
+  details[open] summary::after { transform:rotate(90deg) scale(-1) }
+  details p { color:var(--sec); font-size:14px; margin-top:10px; max-width:36rem }
+
+  /* финал */
+  .final { padding:96px 0 64px }
+  .final h2 { font-size:clamp(26px, 3vw, 34px) }
+  .final .btn { margin-top:24px }
+  .final-note { color:var(--mut); font-size:13px; margin-top:12px }
+  .final-note a { color:var(--sec); border-bottom:1px solid var(--line-strong) }
+  .final-note a:hover { color:var(--text) }
+
+  footer { border-top:1px solid var(--line); padding:24px 0 40px; color:var(--mut); font-size:13px; display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap }
+  footer a { color:var(--sec); transition:color .15s cubic-bezier(.22,1,.36,1) }
+  footer a:hover { color:var(--text) }
+
+  @media (max-width:1080px) {
+    .demos { grid-template-columns:repeat(2, minmax(0,1fr)) }
+  }
+  @media (max-width:900px) {
+    .hero { padding:48px 0 40px }
+    .hero-grid { grid-template-columns:1fr; gap:40px }
+    section { padding:64px 0 0 }
+    .facts { grid-template-columns:repeat(2, minmax(0,1fr)); gap:24px }
+    .steps { grid-template-columns:1fr; gap:24px }
+    .plans { grid-template-columns:1fr }
+    .nav a.lnk { display:none }
+  }
+  @media (max-width:560px) {
+    .demos { grid-template-columns:1fr }
+    .facts { grid-template-columns:1fr }
+    .mosaic { grid-template-columns:1fr 1fr; gap:12px }
+    .hero-cta { flex-wrap:wrap }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap hrow">
+    <a class="brand" href="#top"><img src="logo.png" alt="Логотип Дмитрия" /><span>Дмитрий<b>.</b>Запись</span></a>
+    <nav class="nav">
+      <a class="lnk" href="#wall">Демки</a>
+      <a class="lnk" href="#inside">Что внутри</a>
+      <a class="lnk" href="#price">Цены</a>
+      <a class="btn btn-primary btn-nav" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Написать</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-grid">
+        <div>
+          <h1>Живые демки сайтов с онлайн-записью</h1>
+          <p class="lead">Четыре сайта под четыре сферы: детейлинг, барбершоп, тату и салон красоты. Запись в каждой работает по-настоящему — выберите свою сферу и потыкайте, как будто это ваш сайт.</p>
+          <div class="price-hint"><b>3 500 ₽</b><span>разово · до 30 ноября</span></div>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Написать в Telegram</a>
+            <a class="quiet-link" href="#wall">К демкам ↓</a>
+          </div>
+        </div>
+        <div class="mosaic">
+          <a href="https://biber78788-byte.github.io/demo-glyanec/" target="_blank" rel="noreferrer"><img src="demos/glyanec-og.jpg" alt="«Глянец» — детейлинг-студия в Обнинске" loading="lazy" width="600" height="315" /></a>
+          <a href="https://biber78788-byte.github.io/demo-britva/" target="_blank" rel="noreferrer"><img src="demos/britva-og.jpg" alt="«Бритва» — барбершоп в Подольске" loading="lazy" width="600" height="315" /></a>
+          <a href="https://biber78788-byte.github.io/demo-chernila/" target="_blank" rel="noreferrer"><img src="demos/chernila-og.jpg" alt="«Чернила» — тату-студия в Рыбинске" loading="lazy" width="600" height="315" /></a>
+          <a href="https://biber78788-byte.github.io/demo-alisa/" target="_blank" rel="noreferrer"><img src="demos/alisa-og.jpg" alt="«Алиса» — салон красоты в Калуге" loading="lazy" width="600" height="315" /></a>
+        </div>
+      </div>
+    </div>
+
+    <section id="wall">
+      <h2>Каждая демка — рабочий сайт</h2>
+      <p class="h2sub">Скролльте внутри окна, выбирайте услугу и время — заявка уходит так же, как будет уходить вашему клиенту.</p>
+      <div class="demos">
+        <div class="demo">
+          <div class="demo-head">
+            <img src="demos/glyanec-icon.svg" alt="Знак студии «Глянец»" />
+            <div><div class="demo-t">«Глянец»</div><div class="demo-s">детейлинг · Обнинск</div></div>
+          </div>
+          <div class="live"><i></i>запись работает</div>
+          <div class="frame"><iframe src="https://biber78788-byte.github.io/demo-glyanec/" title="Демка детейлинг-студии «Глянец»" loading="lazy"></iframe></div>
+          <div class="demo-foot"><a href="https://biber78788-byte.github.io/demo-glyanec/" target="_blank" rel="noreferrer">Открыть целиком <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
+        </div>
+        <div class="demo">
+          <div class="demo-head">
+            <img src="demos/britva-icon.svg" alt="Знак барбершопа «Бритва»" />
+            <div><div class="demo-t">«Бритва»</div><div class="demo-s">барбершоп · Подольск</div></div>
+          </div>
+          <div class="live"><i></i>запись работает</div>
+          <div class="frame"><iframe src="https://biber78788-byte.github.io/demo-britva/" title="Демка барбершопа «Бритва»" loading="lazy"></iframe></div>
+          <div class="demo-foot"><a href="https://biber78788-byte.github.io/demo-britva/" target="_blank" rel="noreferrer">Открыть целиком <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
+        </div>
+        <div class="demo">
+          <div class="demo-head">
+            <img src="demos/chernila-icon.svg" alt="Знак тату-студии «Чернила»" />
+            <div><div class="demo-t">«Чернила»</div><div class="demo-s">тату · Рыбинск</div></div>
+          </div>
+          <div class="live"><i></i>запись работает</div>
+          <div class="frame"><iframe src="https://biber78788-byte.github.io/demo-chernila/" title="Демка тату-студии «Чернила»" loading="lazy"></iframe></div>
+          <div class="demo-foot"><a href="https://biber78788-byte.github.io/demo-chernila/" target="_blank" rel="noreferrer">Открыть целиком <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
+        </div>
+        <div class="demo">
+          <div class="demo-head">
+            <img src="demos/alisa-icon.svg" alt="Знак салона красоты «Алиса»" />
+            <div><div class="demo-t">«Алиса»</div><div class="demo-s">салон красоты · Калуга</div></div>
+          </div>
+          <div class="live"><i></i>запись работает</div>
+          <div class="frame"><iframe src="https://biber78788-byte.github.io/demo-alisa/" title="Демка салона красоты «Алиса»" loading="lazy"></iframe></div>
+          <div class="demo-foot"><a href="https://biber78788-byte.github.io/demo-alisa/" target="_blank" rel="noreferrer">Открыть целиком <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="inside">
+      <h2>Что внутри каждой демки</h2>
+      <p class="h2sub">Одна и та же база под вашим названием — с вашими услугами, ценами и фото.</p>
+      <div class="facts">
+        <div class="fact">
+          <svg viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
+          <h3>Заявки в Telegram</h3><p>Имя, телефон, услуга и время приходят вам сразу после записи</p>
+        </div>
+        <div class="fact">
+          <svg viewBox="0 0 24 24"><path d="M21 4H3"/><path d="M21 12H3"/><path d="M21 20H3"/><circle cx="9" cy="4" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="8" cy="20" r="2"/></svg>
+          <h3>Админка с телефона</h3><p>Цены, услуги и блокировка занятых часов — за пару минут</p>
+        </div>
+        <div class="fact">
+          <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+          <h3>На главный экран</h3><p>Ставится как приложение — без магазина и без установки</p>
+        </div>
+        <div class="fact">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4.5-4.5L6 21"/></svg>
+          <h3>Ваши услуги и фото</h3><p>Не шаблонный текст — ваша страница с вашими работами</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Как получить свою</h2>
+      <div class="steps">
+        <div class="step"><div class="num">01</div><h3>Демка</h3><p>Смотрите демку своей сферы здесь или в Telegram.</p></div>
+        <div class="step"><div class="num">02</div><h3>Наполнение</h3><p>Присылаете услуги, цены, фото — собираю вашу версию с вашим названием.</p></div>
+        <div class="step"><div class="num">03</div><h3>Запуск и оплата</h3><p>Смотрите готовый сайт, говорите «го» — только потом 3 500 ₽.</p></div>
+      </div>
+    </section>
+
+    <section id="price">
+      <h2>Цены</h2>
+      <p class="h2sub">Одна оплата. Без подписок и комиссий с клиентов.</p>
+      <div class="plans">
+        <div class="plan hot">
+          <h3>Сайт + запись</h3>
+          <div class="p">3 500 ₽</div>
+          <div class="ps">до 30 ноября, потом 4 500 ₽</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span><b>Страница:</b> услуги, цены, фото, контакты</span></li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Онлайн-запись и заявки в Telegram</span></li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Ставится на телефон как приложение</span></li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Правки в течение месяца — бесплатно</span></li>
+          </ul>
+        </div>
+        <div class="plan">
+          <h3>То же + свой домен</h3>
+          <div class="p">4 900 ₽</div>
+          <div class="ps">до 30 ноября, потом 5 900 ₽</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Всё из тарифа слева</span></li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span><b>Домен .ru</b> на ваше имя</span></li>
+            <li><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span>Свой адрес — легко диктовать клиентам</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Частые вопросы</h2>
+      <div class="faq">
+        <details><summary>Куда приходят заявки?</summary><p>Вам в Telegram мгновенным сообщением: имя, телефон, услуга, дата и время. Дублируются в админке сайта.</p></details>
+        <details><summary>Я смогу сам менять цены?</summary><p>Да, админка простая: цены, услуги, фото и блокировка занятых часов — всё меняется вами за пару минут с телефона.</p></details>
+        <details><summary>Что если не понравится?</summary><p>Оплата — после того как вы посмотрели свою готовую версию. Не понравилось — расходимся без счёта.</p></details>
+      </div>
+    </section>
+
+    <div class="final">
+      <h2>Скажите свою сферу — покажу демку за минуту</h2>
+      <a class="btn btn-primary" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Написать в Telegram</a>
+      <p class="final-note">Отвечаю в течение 15 минут, если не сплю · <a href="mailto:dmitry.kuznetsv@gmail.com">dmitry.kuznetsv@gmail.com</a></p>
+    </div>
+
+    <footer>
+      <div>Дмитрий — сайты с онлайн-записью · 2026</div>
+      <div><a href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Telegram @biberbiber11</a></div>
+    </footer>
+  </div>
+</main>
+</body>
+</html>
