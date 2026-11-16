@@ -166,8 +166,26 @@
   .cta .btn-ghost { background:transparent; border-color:rgba(255,255,255,.24); color:#fff; }
   .cta .btn-ghost:hover { background:rgba(255,255,255,.08); }
 
+  /* ---------- форма заявки ---------- */
+  .signup { border:1px solid var(--line); border-radius:18px; padding:26px 22px; background:#fff; }
+  @media(min-width:900px){ .signup { padding:32px; } }
+  .signup form { display:grid; gap:14px; margin-top:18px; }
+  .fgrid { display:grid; gap:14px; }
+  @media(min-width:700px){ .fgrid { grid-template-columns:1fr 1fr; } }
+  .field { display:grid; gap:6px; }
+  .field label { font-size:13px; font-weight:600; }
+  .field input { width:100%; border:1px solid var(--line-2); border-radius:10px; padding:11px 13px; font:inherit; font-size:14px; background:#fff; color:var(--txt); transition:border-color .16s, box-shadow .16s; }
+  .field input:focus { outline:none; border-color:var(--acc); box-shadow:0 0 0 3px rgba(230,0,126,.12); }
+  .consent { display:flex; gap:10px; font-size:13px; line-height:1.5; color:#2c2a33; cursor:pointer; }
+  .consent input { width:16px; height:16px; margin-top:2px; flex:0 0 16px; accent-color:var(--acc); cursor:pointer; }
+  .consent a { color:var(--acc); text-decoration:underline; text-underline-offset:2px; }
+  .form-msg { font-size:12.5px; line-height:1.5; min-height:18px; color:var(--muted); }
+  .form-msg.err { color:#c81a5a; }
+
   /* ---------- подвал ---------- */
   footer { border-top:1px solid var(--line); padding:30px 0 40px; margin-top:12px; }
+  .legal-req { margin-top:20px; padding-top:18px; border-top:1px solid var(--line); font-size:12.5px; line-height:1.7; color:var(--muted); }
+  .legal-req b { color:var(--txt); font-weight:600; }
   .frow { display:flex; flex-wrap:wrap; gap:16px 24px; align-items:center; justify-content:space-between; }
   .fbrand { display:flex; align-items:center; gap:9px; font-weight:800; letter-spacing:-.02em; }
   .fbrand img { width:26px; height:26px; object-fit:contain; }
@@ -410,6 +428,39 @@
     </div>
   </section>
 
+  <!-- заявка на подключение -->
+  <section id="signup" style="padding-top:0;">
+    <div class="wrap">
+      <div class="signup">
+        <div class="kicker">подключение</div>
+        <h2 style="margin-top:8px;">Оставьте заявку</h2>
+        <p style="font-size:14.6px;line-height:1.6;color:var(--muted);max-width:56ch;">Ответим в рабочее время, покажем демку под вашу сферу и скажем, что нужно для запуска. Заявка уходит в Telegram.</p>
+        <form id="signup-form" novalidate>
+          <div class="fgrid">
+            <div class="field"><label for="f-salon">Салон или студия</label><input id="f-salon" name="salon" required autocomplete="organization" placeholder="Салон «Алиса»"></div>
+            <div class="field"><label for="f-city">Город</label><input id="f-city" name="city" required autocomplete="address-level2" placeholder="Калуга"></div>
+            <div class="field"><label for="f-name">Ваше имя</label><input id="f-name" name="name" required autocomplete="name" placeholder="Дмитрий"></div>
+            <div class="field"><label for="f-contact">Телефон или Telegram</label><input id="f-contact" name="contact" required autocomplete="tel" placeholder="+7 900 000-00-00"></div>
+          </div>
+
+          <label class="consent">
+            <input type="checkbox" id="c-offer" name="offer" required>
+            <span>Я принимаю условия <a href="/offer/" target="_blank" rel="noreferrer">Публичной оферты</a> и подтверждаю, что являюсь законным представителем организации, ИП или самозанятым.</span>
+          </label>
+          <label class="consent">
+            <input type="checkbox" id="c-pd" name="pd" required>
+            <span>Я даю согласие на обработку персональных данных в соответствии с <a href="/privacy/" target="_blank" rel="noreferrer">Политикой обработки ПДн</a>.</span>
+          </label>
+
+          <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+            <button type="submit" class="btn btn-primary" id="signup-submit" disabled style="opacity:.5;">Отправить заявку</button>
+            <span class="form-msg" id="signup-msg" aria-live="polite"></span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <!-- cta -->
   <section style="padding-top:0;">
     <div class="wrap">
@@ -440,9 +491,71 @@
         <a href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Telegram</a>
       </nav>
     </div>
+    <div class="legal-req">
+      <p><b>Исполнитель:</b> Левин Дмитрий Андреевич, плательщик налога на профессиональный доход (самозанятый). ИНН: 500909474900. E-mail: biber78788@gmail.com, тел.: +7 910 448-95-65.</p>
+      <p style="margin-top:8px;">
+        <a href="/offer/" style="text-decoration:underline">Публичная оферта</a> ·
+        <a href="/privacy/" style="text-decoration:underline">Политика обработки персональных данных</a>
+      </p>
+    </div>
     <p class="fcopy">© 2026 ClientsLab · сайты с онлайн-записью для салонов и барбершопов · работаем по всей России</p>
   </div>
 </footer>
+
+<script src="/legal.js"></script>
+<script>
+  (function () {
+    var form = document.getElementById('signup-form');
+    if (!form) return;
+    var offer = document.getElementById('c-offer');
+    var pd = document.getElementById('c-pd');
+    var submit = document.getElementById('signup-submit');
+    var msg = document.getElementById('signup-msg');
+
+    function refresh() {
+      var ok = offer.checked && pd.checked;
+      submit.disabled = !ok;
+      submit.style.opacity = ok ? '1' : '.5';
+      submit.style.cursor = ok ? 'pointer' : 'not-allowed';
+    }
+    offer.addEventListener('change', refresh);
+    pd.addEventListener('change', refresh);
+    refresh();
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      msg.className = 'form-msg err';
+      if (!offer.checked) { msg.textContent = 'Отметьте принятие Публичной оферты.'; return; }
+      if (!pd.checked) { msg.textContent = 'Отметьте согласие на обработку персональных данных.'; return; }
+      var data = new FormData(form);
+      var salon = String(data.get('salon') || '').trim();
+      var city = String(data.get('city') || '').trim();
+      var name = String(data.get('name') || '').trim();
+      var contact = String(data.get('contact') || '').trim();
+      if (!salon || !city || !name || !contact) {
+        msg.textContent = 'Заполните все поля — так будет быстрее ответить.';
+        return;
+      }
+      // Фиксация согласий: момент акцепта оферты и согласия на обработку ПДн
+      try {
+        localStorage.setItem('cl-signup-consent', JSON.stringify({
+          offer_accepted_at: new Date().toISOString(),
+          pd_accepted_at: new Date().toISOString(),
+          docs_version: '2026-11-16',
+        }));
+      } catch (err) { /* приватный режим */ }
+
+      var text = 'Заявка на подключение Clients Lab\n' +
+        'Салон: ' + salon + '\nГород: ' + city + '\nИмя: ' + name + '\nКонтакт: ' + contact +
+        '\n\nОферта принята, согласие на обработку ПДн дано.';
+      window.open('https://t.me/biberbiber11?text=' + encodeURIComponent(text), '_blank', 'noopener');
+      msg.className = 'form-msg';
+      msg.textContent = 'Открыли Telegram — отправьте готовое сообщение. Если не открылось, напишите на biber78788@gmail.com.';
+      form.reset();
+      refresh();
+    });
+  })();
+</script>
 
 </body>
 </html>
