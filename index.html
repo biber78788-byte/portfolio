@@ -456,6 +456,7 @@
             <button type="submit" class="btn btn-primary" id="signup-submit" disabled style="opacity:.5;">Отправить заявку</button>
             <span class="form-msg" id="signup-msg" aria-live="polite"></span>
           </div>
+          <p class="form-msg" style="margin:0">Отправляя заявку, вы подтверждаете оба пункта. Отметки о принятии оферты и согласии на обработку ПДн с датой и временем уходят в тексте сообщения и сохраняются в переписке.</p>
         </form>
       </div>
     </div>
@@ -536,21 +537,21 @@
         msg.textContent = 'Заполните все поля — так будет быстрее ответить.';
         return;
       }
-      // Фиксация согласий: момент акцепта оферты и согласия на обработку ПДн
-      try {
-        localStorage.setItem('cl-signup-consent', JSON.stringify({
-          offer_accepted_at: new Date().toISOString(),
-          pd_accepted_at: new Date().toISOString(),
-          docs_version: '2026-11-16',
-        }));
-      } catch (err) { /* приватный режим */ }
+      // Момент согласия фиксируется в тексте заявки: сообщение остаётся
+      // в переписке Telegram вместе с серверной отметкой времени.
+      // Локальное хранилище для этого не годится — оно не доказательство.
+      var agreedAt = new Date();
+      var agreedLabel = agreedAt.toLocaleString('ru-RU', { dateStyle: 'short', timeStyle: 'short' });
 
       var text = 'Заявка на подключение Clients Lab\n' +
         'Салон: ' + salon + '\nГород: ' + city + '\nИмя: ' + name + '\nКонтакт: ' + contact +
-        '\n\nОферта принята, согласие на обработку ПДн дано.';
+        '\n\nОферта принята: да (' + agreedLabel + ', ред. 2026-11-16)' +
+        '\nСогласие на обработку ПДн: да (' + agreedLabel + ', ред. 2026-11-16)' +
+        '\nИсточник согласий: форма заявки на clientslab.ru';
       window.open('https://t.me/biberbiber11?text=' + encodeURIComponent(text), '_blank', 'noopener');
       msg.className = 'form-msg';
-      msg.textContent = 'Открыли Telegram — отправьте готовое сообщение. Если не открылось, напишите на biber78788@gmail.com.';
+      msg.textContent =
+        'Открыли Telegram — отправьте готовое сообщение, в нём уже есть отметки согласий. Если не открылось, напишите на biber78788@gmail.com.';
       form.reset();
       refresh();
     });
