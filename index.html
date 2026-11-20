@@ -221,6 +221,78 @@
   .legal{margin-top:20px;line-height:1.7;max-width:80ch}
   .legal a{text-decoration:underline;text-underline-offset:2px}
   .legal a:hover{color:#fff}
+
+  /* ---------- 10. доработка: навигация, оттенки секций, детали ---------- */
+  :root{--bg-2:#fdf1f7;--sand:#f6efe8;--plum:#1d0714;--acc-ink:#a8005c}
+  .hrow{height:auto;min-height:68px;flex-wrap:wrap;padding:10px 0;gap:14px}
+  .nav{display:flex;flex:1 1 100%;min-width:0;order:3;gap:6px 16px;margin-left:0;flex-wrap:wrap;font-size:13px;padding-bottom:2px}
+  .nav a{display:flex;align-items:center;padding:4px 0}
+  .nav a::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--line-2);margin-right:7px;transition:background .16s}
+  .nav a:hover{color:var(--acc-ink);border-color:var(--acc-ink)}
+  .nav a:hover::before{background:var(--acc)}
+  .hcta{margin-left:auto}
+  @media(min-width:900px){
+    .hrow{height:70px;min-height:0;flex-wrap:nowrap;padding:0;gap:22px}
+    .nav{order:0;width:auto;margin-left:auto;overflow:visible;gap:22px;font-size:13.5px;padding-bottom:0}
+  }
+
+  .slots{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:26px;padding-top:18px;border-top:1px dashed var(--line-2)}
+  .slots .cap{font-size:11.5px;color:var(--muted);margin-right:2px}
+  .slot{font-family:'JetBrains Mono',monospace;font-size:11.5px;padding:5px 9px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--muted)}
+  .slot.on{background:var(--acc);border-color:var(--acc);color:#fff}
+  .slot.dim{color:#a9a5b2;text-decoration:line-through;text-decoration-thickness:1px}
+
+  section.tint{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  section.sand{background:var(--sand);border-top:1px solid #e8ded1;border-bottom:1px solid #e8ded1}
+  .kicker{display:flex;align-items:center;gap:10px}
+  .kicker .num{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--acc-ink)}
+
+  .how{background:var(--plum);color:#fff}
+  .how h2{color:#fff}
+  .how .kicker{color:#b89bab}
+  .how .kicker b{color:#fff}
+  .how .kicker b::before{background:var(--acc-2)}
+  .how .kicker .num{color:#ff69ae}
+  .steps{display:grid;gap:14px;margin-top:30px}
+  @media(min-width:820px){.steps{grid-template-columns:repeat(3,1fr);gap:18px}}
+  .step{border:1px solid rgba(255,255,255,.13);border-radius:16px;padding:22px 22px 24px;background:rgba(255,255,255,.028)}
+  .step .n{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.08em;color:#ff69ae}
+  .step b{display:block;margin:13px 0 8px;font-size:16px;font-weight:600;letter-spacing:-.01em}
+  .step p{font-size:13.5px;line-height:1.62;color:#c4adb9}
+  .steps-note{margin-top:18px;font-size:12.5px;color:#a58d9b}
+  .steps-note a{color:#fff;border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:1px}
+
+  .item:hover{border-color:#f0bdd8}
+  .item .item-body .row a:hover{color:var(--acc-ink);border-color:var(--acc-ink)}
+  .ben:hover{border-color:#efbfd8}
+  .ben .ic{background:#fff;box-shadow:inset 0 0 0 1px #f6cfe3}
+  .plan-main{background:#fff6fa}
+  .plan-main .price{color:var(--acc-ink)}
+  .plan:hover{border-color:var(--line-2)}
+  .plan-main:hover{border-color:var(--acc)}
+  .trust-item{position:relative}
+  .trust-item b::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--acc);margin-right:8px;vertical-align:2px}
+  .final{border-top:1px solid rgba(230,0,126,.35)}
+  .final .kicker{color:#b6b3bf}
+
+  /* FAQ: заголовок слева, вопросы справа */
+  @media(min-width:900px){
+    #faq .faq{grid-template-columns:1fr 1fr;max-width:none;align-items:start}
+  }
+
+  /* финальный блок: короткая карточка «что дальше» */
+  .final-card{border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:22px 24px;background:rgba(255,255,255,.035);min-width:280px}
+  .final-card .cap{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:#ff69ae}
+  .final-card ol{list-style:none;margin-top:14px;display:flex;flex-direction:column;gap:12px;counter-reset:s}
+  .final-card li{display:flex;gap:11px;font-size:13.6px;line-height:1.5;color:#ddd8e2;counter-increment:s}
+  .final-card li::before{content:counter(s,decimal-leading-zero);font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#a58d9b;flex:0 0 20px;padding-top:2px}
+  .final .wrap{align-items:center}
+
+  /* на узких экранах превью тянется по ширине колонки, без горизонтального скролла */
+  @media(max-width:959px){
+    .hero .card-shot{justify-self:stretch;width:auto}
+    .hero .card-shot img{width:100%;max-height:none}
+  }
 </style>
 </head>
 <body>
@@ -228,7 +300,6 @@
 <header><div class="wrap hrow">
   <a class="brand" href="#top"><img src="logo.png" alt="ClientsLab">ClientsLab</a>
   <nav class="nav"><a href="#examples">Примеры</a><a href="#benefits">Что даёт</a><a href="#inside">Что входит</a><a href="#pricing">Цены</a><a href="#faq">Вопросы</a></nav>
-  <span class="price-chip mono">от 9 900 ₽</span>
   <div class="hcta"><a class="btn btn-primary" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Написать</a></div>
 </div></header>
 
@@ -249,6 +320,14 @@
           <span>9 900 ₽ разово</span>
           <span>без комиссии с записей</span>
           <span>оплата после просмотра</span>
+        </div>
+        <div class="slots">
+          <span class="cap">пример расписания</span>
+          <span class="slot">10:00</span>
+          <span class="slot on">12:30</span>
+          <span class="slot dim">14:00</span>
+          <span class="slot">15:30</span>
+          <span class="slot">18:00</span>
         </div>
       </div>
       <div class="card-shot">
@@ -271,7 +350,7 @@
     <div class="wrap">
       <div class="proof-head">
         <div>
-          <div class="kicker"><b>работает прямо сейчас</b></div>
+          <div class="kicker"><span class="num">01</span><b>работает прямо сейчас</b></div>
           <h2>Два живых сайта — откройте с телефона</h2>
           <p class="sec-lead">Выберите услугу, мастера и время — увидите ровно то, что увидит ваш клиент.</p>
         </div>
@@ -298,9 +377,9 @@
   </section>
 
   <!-- 4. выгоды -->
-  <section id="benefits" class="sec-tight">
+  <section id="benefits" class="sec-tight tint">
     <div class="wrap">
-      <div class="kicker"><b>что это меняет</b></div>
+      <div class="kicker"><span class="num">02</span><b>что это меняет</b></div>
       <h2>Выгода не в сайте, а в том, что перестаёт болеть</h2>
       <div class="bens">
         <div class="ben">
@@ -327,10 +406,36 @@
     </div>
   </section>
 
+  <!-- 4.5 как это работает -->
+  <section class="how">
+    <div class="wrap">
+      <div class="kicker"><span class="num">03</span><b>как это работает</b></div>
+      <h2>Три шага, без встреч и брифов на десять страниц</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="n">01 / данные</div>
+          <b>Присылаете услуги и цены</b>
+          <p>Список услуг, длительность, цены и фото, если есть. Хватит сообщения в Telegram или файла — встречаться не нужно.</p>
+        </div>
+        <div class="step">
+          <div class="n">02 / сборка</div>
+          <b>Показываю вашу версию</b>
+          <p>Собираю страницу с вашими данными и цветами. Смотрите на телефоне, правим формулировки и порядок услуг.</p>
+        </div>
+        <div class="step">
+          <div class="n">03 / запуск</div>
+          <b>Включаем запись</b>
+          <p>Подключаю Telegram и домен, проверяю запись с телефона. Дальше цены и график меняете сами в админке.</p>
+        </div>
+      </div>
+      <p class="steps-note">Посмотреть, как будет выглядеть ваша страница, можно уже сейчас — <a href="constructor.html">в конструкторе</a>.</p>
+    </div>
+  </section>
+
   <!-- 5. продукт -->
   <section id="inside" class="sec-tight">
     <div class="wrap">
-      <div class="kicker"><b>что входит</b></div>
+      <div class="kicker"><span class="num">04</span><b>что входит</b></div>
       <h2>Одна страница, в которой есть всё для записи</h2>
       <div class="prod">
         <div>
@@ -344,7 +449,7 @@
             <div><span>Срок запуска</span><b>2 дня</b></div>
           </div>
           <div class="cta-row">
-            <a class="btn btn-ink" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Собрать мою версию</a>
+            <a class="btn btn-ink" href="constructor.html">Собрать мою версию</a>
           </div>
         </div>
         <figure class="prod-shot">
@@ -358,9 +463,9 @@
   </section>
 
   <!-- 5.5 цены -->
-  <section id="pricing" class="sec-tight">
+  <section id="pricing" class="sec-tight sand">
     <div class="wrap">
-      <div class="kicker"><b>цены</b></div>
+      <div class="kicker"><span class="num">05</span><b>цены</b></div>
       <h2>Сколько стоит</h2>
       <p class="sec-lead">Одна оплата за сам сайт. Комиссии с записей нет, подписки на год нет.</p>
       <div class="plans">
@@ -420,8 +525,10 @@
   <!-- 7. вопросы -->
   <section id="faq">
     <div class="wrap">
-      <div class="kicker"><b>вопросы</b></div>
-      <h2>Что обычно спрашивают до запуска</h2>
+      <div class="faq-head">
+        <div class="kicker"><span class="num">06</span><b>вопросы</b></div>
+        <h2>Что обычно спрашивают до запуска</h2>
+      </div>
       <div class="faq">
         <details open>
           <summary>Сколько ждать готовый сайт?</summary>
@@ -461,6 +568,14 @@
           <a class="btn btn-primary" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Написать в Telegram</a>
           <a class="btn btn-line" href="mailto:biber78788@gmail.com">Написать на почту</a>
         </div>
+      </div>
+      <div class="final-card">
+        <span class="cap">что дальше</span>
+        <ol>
+          <li>Пишете сферу и город</li>
+          <li>Присылаю похожий пример</li>
+          <li>Считаю срок и стоимость</li>
+        </ol>
       </div>
     </div>
   </section>
