@@ -186,6 +186,14 @@
             <div class="sw-row" id="secondarySw" role="group" aria-label="Готовые вторые цвета"></div>
           </div>
         </div>
+        <div class="field-wrap" style="margin-top:14px;max-width:280px">
+          <label for="bg">Фон страницы</label>
+          <select class="field" id="bg" name="bg">
+            <option value="light">Светлый</option>
+            <option value="tint">С оттенком второго цвета</option>
+            <option value="dark">Тёмный</option>
+          </select>
+        </div>
       </section>
 
       <section class="group">
@@ -234,7 +242,7 @@
   var SWATCHES = ['#1f1b16', '#e6007e', '#8c3f57', '#2f6b5f', '#9a5b4f', '#3b4a86'];
   var TINTS = ['#d9b46a', '#f2c6d8', '#ecd7cd', '#cfe5dd', '#f0e0d6', '#d8cfc0'];
 
-  var state = { spec: 'beauty', name: '', city: '', phone: '', primary: '', secondary: '', services: [] };
+  var state = { spec: 'beauty', name: '', city: '', phone: '', primary: '', secondary: '', bg: 'light', services: [] };
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var statusEl = $('#status');
   var form = $('#form');
@@ -258,7 +266,7 @@
   function encodeState() {
     var payload = {
       spec: state.spec, name: state.name, city: state.city, phone: state.phone,
-      p: state.primary, s: state.secondary, services: state.services
+      p: state.primary, s: state.secondary, bg: state.bg, services: state.services
     };
     return btoa(unescape(encodeURIComponent(JSON.stringify(payload))))
       .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -341,6 +349,7 @@
     var p = PRESETS[key];
     if (force) { state.name = p.name; state.city = p.city; state.phone = p.phone; }
     state.spec = key;
+    $('#spec').value = key;
     state.primary = p.primary;
     state.secondary = p.secondary;
     state.services = p.services.map(function (s) { return { n: s.n, p: s.p, d: s.d }; });
@@ -381,6 +390,11 @@
     renderRows();
     var last = svcWrap.lastElementChild && svcWrap.lastElementChild.querySelector('input');
     if (last) last.focus();
+    update();
+  });
+
+  $('#bg').addEventListener('change', function (e) {
+    state.bg = e.target.value;
     update();
   });
 
