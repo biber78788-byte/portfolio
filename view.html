@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#e6007e" id="themeColor">
+<title>Страница студии — ClientsLab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--p:#e6007e;--s:#f2c6d8;--on-p:#fff;--tint:rgba(242,198,216,.4);--ink:#141317;--muted:#6a6774;--line:#e7e4ec;--bg:#fff;--ease:cubic-bezier(.22,1,.36,1)}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  .mono{font-variant-numeric:tabular-nums}
+
+  .top{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+  .top-in{height:64px;display:flex;align-items:center;gap:12px}
+  .brand{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:600;letter-spacing:-.01em;min-width:0}
+  .mark{width:28px;height:28px;border-radius:9px;background:var(--p);color:var(--on-p);display:grid;place-items:center;font-size:13px;font-weight:600;flex:0 0 28px}
+  .bname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:44vw}
+  .city{margin-left:auto;font-size:12.5px;color:var(--muted)}
+  .top .go{display:inline-flex;align-items:center;height:38px;padding:0 16px;border-radius:10px;background:var(--p);color:var(--on-p);font-size:13.5px;font-weight:600;transition:transform .16s var(--ease),filter .18s}
+  .top .go:hover{filter:brightness(.95);transform:translateY(-1px)}
+  .top .go:active{transform:scale(.985)}
+  @media(max-width:560px){.city{display:none}.top .go{height:36px;padding:0 12px;font-size:13px}}
+
+  .hero{padding:36px 0 30px;background:linear-gradient(180deg,var(--tint),var(--bg))}
+  @media(min-width:900px){.hero{padding:64px 0 56px}}
+  .hero-grid{display:grid;gap:28px}
+  @media(min-width:900px){.hero-grid{grid-template-columns:1.05fr .95fr;gap:44px;align-items:center}}
+  .tag{display:inline-block;font-size:12px;color:var(--ink);background:#fff;padding:5px 11px;border-radius:999px;border:1px solid rgba(20,19,23,.08)}
+  h1{font-size:clamp(30px,5.6vw,52px);line-height:1.06;letter-spacing:-.03em;font-weight:600;margin:14px 0 12px;max-width:16ch;text-wrap:balance}
+  .lead{font-size:15.5px;color:var(--muted);max-width:46ch}
+  @media(min-width:900px){.lead{font-size:17px}}
+  .cta{display:inline-flex;align-items:center;justify-content:center;gap:9px;height:50px;padding:0 24px;border:none;border-radius:12px;
+    background:var(--p);color:var(--on-p);font-size:15px;font-weight:600;cursor:pointer;margin-top:22px;
+    box-shadow:0 1px 1px rgba(255,255,255,.22) inset,0 12px 22px -18px rgba(20,19,23,.6);
+    transition:transform .16s var(--ease),filter .18s}
+  .cta:hover{filter:brightness(.95);transform:translateY(-1px)}
+  .cta:active{transform:scale(.99)}
+  .cta:focus-visible,.top .go:focus-visible,.foot a:focus-visible,.alt:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(230,0,126,.28)}
+  .notes{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:16px;font-size:12.5px;color:var(--muted)}
+  .notes span{display:flex;align-items:center;gap:7px}
+  .notes span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--p)}
+
+  .quick{border:1px solid var(--line);border-radius:16px;background:#fff;padding:18px 20px;box-shadow:0 24px 48px -40px rgba(20,19,23,.35)}
+  .quick h2{font-size:13px;font-weight:600;letter-spacing:-.01em}
+  .quick .sub{font-size:11.5px;color:var(--muted);margin-top:2px}
+  .quick ul{list-style:none;margin-top:12px;border-top:1px solid var(--line)}
+  .quick li{display:flex;justify-content:space-between;gap:12px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--line)}
+  .quick li:last-child{border-bottom:none;padding-bottom:2px}
+  .quick .n{font-size:13.5px;font-weight:500}
+  .quick .d{display:block;font-size:11.5px;color:var(--muted);margin-top:1px}
+  .quick .p{font-size:13.5px;font-weight:600;white-space:nowrap}
+
+  .sec{padding:36px 0}
+  @media(min-width:900px){.sec{padding:56px 0}}
+  .sec h2{font-size:clamp(21px,3vw,28px);letter-spacing:-.02em;font-weight:600;line-height:1.16}
+  .sec .sub{font-size:14px;color:var(--muted);margin-top:6px}
+  .list{list-style:none;margin-top:20px;border-top:1px solid var(--line)}
+  .list li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 0;border-bottom:1px solid var(--line)}
+  .list .n{font-size:15px;font-weight:500}
+  .list .d{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+  .list .p{font-size:15px;font-weight:600;white-space:nowrap}
+  @media(min-width:760px){.list{columns:2;column-gap:40px}.list li{break-inside:avoid}}
+
+  .foot{background:#141317;color:#a9a5b4;padding:28px 0 34px;font-size:13px;margin-top:16px}
+  .foot b{display:block;color:#fff;font-size:15px;font-weight:600;margin-bottom:4px}
+  .foot .row{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:baseline;justify-content:space-between}
+  .foot a{color:#fff;border-bottom:1px solid rgba(255,255,255,.35);padding-bottom:1px}
+  .foot .note{margin-top:14px;font-size:11.5px;color:#7d7988;max-width:60ch;line-height:1.6}
+  .foot .note a{color:#c9c5d2}
+
+  .empty{padding:64px 0}
+  .empty p{font-size:14.5px;color:var(--muted);margin-top:10px}
+  .alt{color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:1px}
+
+  @media(prefers-reduced-motion:reduce){.cta,.top .go{transition:none;transform:none}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap top-in">
+  <div class="brand"><span class="mark" id="mark">С</span><span class="bname" id="bname">Название</span></div>
+  <span class="city" id="city">Город</span>
+  <a class="go" href="#services">Записаться</a>
+</div></header>
+
+<main id="app"></main>
+
+<script>
+(function () {
+  var PRESETS = {
+    barber: { label: 'Барбершоп', hero: 'Стрижка в удобное время', lead: 'Мужские стрижки, борода и бритьё. Выберите услугу и время — запись подтвердится сразу.', p: '#1f1b16', s: '#d9b46a',
+      services: [{ n: 'Мужская стрижка', p: '1800', d: '45 мин' }, { n: 'Стрижка машинкой', p: '1200', d: '30 мин' }, { n: 'Оформление бороды', p: '900', d: '30 мин' }, { n: 'Королевское бритьё', p: '1500', d: '40 мин' }] },
+    beauty: { label: 'Салон красоты', hero: 'Запись к мастеру за минуту', lead: 'Стрижки, окрашивание, ногти и косметология. Всё расписание и цены — на одной странице.', p: '#e6007e', s: '#f2c6d8',
+      services: [{ n: 'Женская стрижка', p: '2400', d: '60 мин' }, { n: 'Окрашивание в один тон', p: '5500', d: '2 часа' }, { n: 'Маникюр с покрытием', p: '2200', d: '90 мин' }, { n: 'Укладка', p: '1900', d: '45 мин' }] },
+    nails: { label: 'Ногтевая студия', hero: 'Маникюр без звонков и переписки', lead: 'Маникюр, педикюр и дизайн. Выберите время сами — свободные окна всегда перед глазами.', p: '#8c3f57', s: '#ecd7cd',
+      services: [{ n: 'Маникюр с гель-лаком', p: '2500', d: '90 мин' }, { n: 'Педикюр', p: '3200', d: '90 мин' }, { n: 'Снятие покрытия', p: '500', d: '30 мин' }, { n: 'Дизайн', p: '300', d: '15 мин' }] },
+    massage: { label: 'Массаж', hero: 'Сеанс массажа в удобное время', lead: 'Классический массаж, спина и шея, лимфодренаж. Запись на сеанс без звонка.', p: '#2f6b5f', s: '#cfe5dd',
+      services: [{ n: 'Классический массаж', p: '3500', d: '60 мин' }, { n: 'Спина и шея', p: '2000', d: '30 мин' }, { n: 'Лимфодренаж', p: '5200', d: '90 мин' }, { n: 'Массаж стоп', p: '1800', d: '30 мин' }] },
+    tattoo: { label: 'Тату-студия', hero: 'Запись на сеанс и консультацию', lead: 'Эскизы, сеансы и перекрытие. Посмотрите свободные даты и выберите время.', p: '#242424', s: '#d8cfc0',
+      services: [{ n: 'Консультация', p: '0', d: '30 мин' }, { n: 'Тату до 10 см', p: '8000', d: '2 часа' }, { n: 'Сеанс 3 часа', p: '15000', d: '3 часа' }, { n: 'Перекрытие', p: '12000', d: '3 часа' }] },
+    cosmetology: { label: 'Косметология', hero: 'Запись к косметологу онлайн', lead: 'Чистка, пилинг и уход за лицом. Цены и свободное время видны сразу.', p: '#9a5b4f', s: '#f0e0d6',
+      services: [{ n: 'Чистка лица', p: '4500', d: '60 мин' }, { n: 'Пилинг', p: '3800', d: '45 мин' }, { n: 'Массаж лица', p: '2400', d: '30 мин' }, { n: 'Уход по типу кожи', p: '3900', d: '60 мин' }] }
+  };
+
+  var DEFAULTS = { spec: 'beauty', name: 'Алиса', city: 'Калуга', phone: '+7 910 448-95-65' };
+
+  function decodeParam() {
+    var raw = new URLSearchParams(location.search).get('d');
+    if (!raw) return null;
+    try {
+      var b64 = raw.replace(/-/g, '+').replace(/_/g, '/');
+      while (b64.length % 4) b64 += '=';
+      return JSON.parse(decodeURIComponent(escape(atob(b64))));
+    } catch (e) { return null; }
+  }
+
+  var data = decodeParam() || {};
+  var spec = PRESETS[data.spec] ? data.spec : DEFAULTS.spec;
+  var preset = PRESETS[spec];
+
+  function str(v, max) {
+    if (typeof v !== 'string') return '';
+    return v.trim().slice(0, max || 60);
+  }
+  function hex(v, fallback) {
+    return typeof v === 'string' && /^#[0-9a-f]{6}$/i.test(v.trim()) ? v.trim() : fallback;
+  }
+  function onColor(h) {
+    var c = h.replace('#', '');
+    var lin = [0, 2, 4].map(function (i) {
+      var v = parseInt(c.slice(i, i + 2), 16) / 255;
+      return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2] > 0.42 ? '#141317' : '#ffffff';
+  }
+  function rgba(h, a) {
+    var c = h.replace('#', '');
+    return 'rgba(' + parseInt(c.slice(0, 2), 16) + ',' + parseInt(c.slice(2, 4), 16) + ',' + parseInt(c.slice(4, 6), 16) + ',' + a + ')';
+  }
+  function money(v) {
+    var s = String(v == null ? '' : v).trim();
+    if (!s) return '—';
+    return /^\d+$/.test(s) ? new Intl.NumberFormat('ru-RU').format(Number(s)) + ' ₽' : s.slice(0, 16);
+  }
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  var name = str(data.name, 30) || DEFAULTS.name;
+  var city = str(data.city, 24) || DEFAULTS.city;
+  var phone = str(data.phone, 60);
+  var primary = hex(data.p, preset.p);
+  var secondary = hex(data.s, preset.s);
+  var services = Array.isArray(data.services) ? data.services.slice(0, 12).map(function (s) {
+    return { n: str(s && s.n, 40), p: str(s && s.p, 12), d: str(s && s.d, 12) };
+  }).filter(function (s) { return s.n || s.p; }) : preset.services;
+  if (!services.length) services = preset.services;
+
+  document.title = name + ' — запись онлайн';
+  document.documentElement.style.setProperty('--p', primary);
+  document.documentElement.style.setProperty('--s', secondary);
+  document.documentElement.style.setProperty('--on-p', onColor(primary));
+  document.documentElement.style.setProperty('--tint', rgba(secondary, 0.4));
+  document.getElementById('themeColor').setAttribute('content', primary);
+  document.getElementById('mark').textContent = name.charAt(0).toUpperCase();
+  document.getElementById('bname').textContent = name;
+  document.getElementById('city').textContent = city;
+
+  var listHtml = services.map(function (s) {
+    return '<li><span><span class="n">' + esc(s.n || 'Услуга') + '</span>' +
+      (s.d ? '<span class="d">' + esc(s.d) + '</span>' : '') + '</span>' +
+      '<span class="p mono">' + esc(money(s.p)) + '</span></li>';
+  }).join('');
+
+  var quick = services.slice(0, 4).map(function (s) {
+    return '<li><span><span class="n">' + esc(s.n || 'Услуга') + '</span>' +
+      (s.d ? '<span class="d">' + esc(s.d) + '</span>' : '') + '</span>' +
+      '<span class="p mono">' + esc(money(s.p)) + '</span></li>';
+  }).join('');
+
+  var phoneHref = phone ? (phone.indexOf('http') === 0 ? esc(phone) : 'tel:' + esc(phone.replace(/[^\d+]/g, ''))) : '';
+
+  document.getElementById('app').innerHTML =
+    '<section class="hero"><div class="wrap hero-grid">' +
+      '<div>' +
+        '<span class="tag">' + esc(preset.label) + '</span>' +
+        '<h1>' + esc(preset.hero) + '</h1>' +
+        '<p class="lead">' + esc(preset.lead) + '</p>' +
+        '<a class="cta" href="#services">Выбрать время</a>' +
+        '<div class="notes"><span>выбор услуги и времени</span><span>подтверждение сразу</span></div>' +
+      '</div>' +
+      '<div class="quick">' +
+        '<h2>Услуги и цены</h2>' +
+        '<p class="sub">Свободное время видно при записи</p>' +
+        '<ul>' + quick + '</ul>' +
+      '</div>' +
+    '</div></section>' +
+    '<section class="sec" id="services"><div class="wrap">' +
+      '<h2>Все услуги</h2>' +
+      '<p class="sub">Цены указаны без доплат — итог виден до записи</p>' +
+      '<ul class="list">' + listHtml + '</ul>' +
+    '</div></section>' +
+    '<footer class="foot"><div class="wrap">' +
+      '<div class="row"><div><b>' + esc(name) + '</b>' + esc(city) + '</div>' +
+      '<div>' + (phone ? '<a href="' + phoneHref + '">' + esc(phone) + '</a>' : 'Добавьте телефон в конструкторе') + '</div></div>' +
+      '<p class="note">Пример страницы от ClientsLab. Запись подключается к вашему Telegram при запуске. ' +
+        '<a href="constructor.html">Собрать свой вариант</a></p>' +
+    '</div></footer>';
+})();
+</script>
+</body>
+</html>

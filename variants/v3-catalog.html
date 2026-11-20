@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ClientsLab — вариант 3 «Каталог»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#faf9fa;--card:#fff;--ink:#111015;--muted:#6d6b76;--line:#e4e1e8;--line-2:#cfcad6;
+    --acc:#e6007e;--acc-2:#ff3d92;--acc-soft:#fdeaf3;
+    --shadow-1:0 1px 2px rgba(17,16,21,.05);
+    --shadow-2:0 18px 40px -30px rgba(17,16,21,.42);
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+  html{scroll-behavior:smooth}
+  section[id],div[id]{scroll-margin-top:84px}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%;height:auto}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+  @media(min-width:900px){.wrap{padding:0 40px}}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+
+  /* ---------- кнопки ---------- */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    font-size:14px;font-weight:600;letter-spacing:-.01em;
+    padding:13px 22px;border-radius:12px;border:1px solid transparent;
+    cursor:pointer;user-select:none;
+    transition:transform .16s var(--ease),background .18s var(--ease),border-color .18s,color .18s,box-shadow .18s;
+  }
+  .btn:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(230,0,126,.28),0 6px 18px -8px rgba(230,0,126,.6)}
+  .btn svg{width:16px;height:16px;flex:0 0 16px}
+  .btn-primary{
+    color:#fff;background:linear-gradient(180deg,#ef1f8b 0%,#e6007e 100%);
+    box-shadow:0 1px 1px rgba(255,255,255,.26) inset,0 10px 22px -16px rgba(17,16,21,.55),0 2px 4px -2px rgba(17,16,21,.2);
+  }
+  .btn-primary:hover{
+    transform:translateY(-2px);
+    background:linear-gradient(180deg,#f4369a 0%,#ea0081 100%);
+    box-shadow:0 1px 1px rgba(255,255,255,.34) inset,0 16px 28px -18px rgba(17,16,21,.6),0 4px 8px -4px rgba(17,16,21,.22);
+  }
+  .btn-primary:active{
+    transform:translateY(0) scale(.985);
+    box-shadow:0 2px 6px -2px rgba(17,16,21,.28) inset,0 4px 10px -8px rgba(17,16,21,.35);
+  }
+  .btn-ink{
+    background:var(--ink);color:#fff;
+    box-shadow:0 10px 22px -12px rgba(17,16,21,.7);
+  }
+  .btn-ink:hover{background:#232129;transform:translateY(-2px);box-shadow:0 16px 30px -14px rgba(17,16,21,.75)}
+  .btn-ink:active{transform:translateY(0) scale(.985);box-shadow:0 4px 10px -6px rgba(17,16,21,.6) inset}
+  .btn-line{
+    background:var(--card);color:var(--ink);border-color:var(--line-2);
+    box-shadow:0 1px 2px rgba(17,16,21,.04);
+  }
+  .btn-line:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:0 10px 22px -14px rgba(17,16,21,.5)}
+  .btn-line:active{transform:translateY(0) scale(.985)}
+  .btn-block{width:100%}
+  @media(prefers-reduced-motion:reduce){.btn,.btn:hover,.btn:active{transition:none;transform:none}}
+
+  header{position:sticky;top:0;z-index:30;background:rgba(250,249,250,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .hrow{height:68px;display:flex;align-items:center;gap:22px}
+  .brand{display:flex;align-items:center;gap:9px;font-size:15.5px;font-weight:600;letter-spacing:-.02em}
+  .brand img{width:24px;height:24px}
+  .nav{display:none;gap:24px;margin-left:auto;font-size:13.5px;color:var(--muted)}
+  .nav a{padding:6px 0;border-bottom:1px solid transparent;transition:color .16s,border-color .16s}
+  .nav a:hover{color:var(--ink);border-color:var(--ink)}
+  @media(min-width:900px){.nav{display:flex}}
+  .hcta{margin-left:auto;display:flex;gap:10px;align-items:center}
+  .hcta .btn{padding:11px 18px;font-size:13.5px}
+  .price-chip{display:none;font-size:12.5px;color:var(--muted);padding:0 4px}
+  @media(min-width:1080px){.price-chip{display:inline}}
+
+  /* ---------- 1. герой ---------- */
+  .hero{padding:48px 0 56px}
+  @media(min-width:960px){.hero{padding:76px 0 84px}}
+  .hgrid{display:grid;gap:40px}
+  @media(min-width:960px){.hgrid{grid-template-columns:1.08fr .92fr;gap:56px;align-items:center}}
+  .label-row{display:flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:0;color:var(--muted)}
+  .label-row b{color:var(--ink);font-weight:500}
+  h1{font-size:clamp(32px,4.9vw,58px);line-height:1.05;letter-spacing:-.03em;font-weight:600;margin:18px 0 20px;max-width:15ch;text-wrap:balance}
+  .lead{font-size:16.5px;line-height:1.6;color:var(--muted);max-width:44ch}
+  .lead b{color:var(--ink);font-weight:600}
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+  .hero-note{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font-size:12.5px;color:var(--muted)}
+  .hero-note span{display:flex;align-items:center;gap:7px}
+  .hero-note span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--acc)}
+
+  .card-shot{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:0 40px 72px -52px rgba(17,16,21,.42),0 2px 6px -3px rgba(17,16,21,.1)}
+  .hero .card-shot{justify-self:end;width:max-content;max-width:100%}
+  .hero .card-shot img{width:auto;max-height:660px}
+  .card-shot img{width:100%;border-radius:10px}
+  .shot-meta{display:flex;justify-content:space-between;gap:12px;padding:12px 4px 2px;font-size:11.5px;letter-spacing:0;color:var(--muted)}
+  .shot-meta b{color:var(--ink);font-weight:600}
+
+  /* ---------- 2. утп ---------- */
+  .usp{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--card)}
+  .usp .wrap{display:grid;grid-template-columns:1fr 1fr}
+  @media(min-width:760px){.usp .wrap{grid-template-columns:repeat(4,1fr)}}
+  .usp-item{padding:24px 0;border-right:1px solid var(--line)}
+  .usp-item:last-child{border-right:none}
+  @media(max-width:759px){.usp-item:nth-child(2n){border-right:none;padding-left:20px}.usp-item:nth-child(2n+1){padding-right:20px}.usp-item:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+  @media(min-width:760px){.usp-item{padding:28px 24px}.usp-item:first-child{padding-left:0}}
+  .usp-item b{display:block;font-size:22px;font-weight:500;letter-spacing:-.02em}
+  .usp-item span{display:block;font-size:12.5px;color:var(--muted);margin-top:5px;line-height:1.4}
+
+  section{padding:64px 0}
+  @media(min-width:900px){section{padding:88px 0}}
+  section.sec-tight{padding-top:0}
+  .kicker{font-size:12.5px;letter-spacing:0;color:var(--muted);margin-bottom:12px}
+  .kicker b{color:var(--ink);font-weight:500}
+  .kicker b::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--acc);margin-right:7px;vertical-align:2px}
+  h2{font-size:clamp(23px,3vw,34px);line-height:1.14;letter-spacing:-.02em;font-weight:600;max-width:22ch;text-wrap:balance}
+  .sec-lead{font-size:15.5px;line-height:1.6;color:var(--muted);max-width:52ch;margin-top:12px}
+
+  /* ---------- 3. примеры ---------- */
+  .proof-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .proof-head .sec-lead{margin-top:10px}
+  .items{display:grid;gap:18px;margin-top:32px}
+  @media(min-width:760px){.items{grid-template-columns:1fr 1fr}}
+  .item{display:grid;grid-template-columns:132px 1fr;gap:16px;border:1px solid var(--line);border-radius:16px;padding:12px;background:var(--card);transition:border-color .2s,box-shadow .2s,transform .2s}
+  .item:hover{border-color:var(--line-2);box-shadow:0 24px 48px -34px rgba(17,16,21,.38)}
+  .item{align-items:stretch}
+  .item img{width:132px;height:100%;min-height:176px;object-fit:cover;object-position:top center;border-radius:10px}
+  .item-body{display:flex;flex-direction:column;gap:6px;min-width:0}
+  .item-body b{font-size:15px;font-weight:600}
+  .item-body small{font-size:12.5px;color:var(--muted);line-height:1.45}
+  .item-body .row{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;color:var(--muted);margin-top:auto;padding-top:10px;border-top:1px solid var(--line)}
+  .item-body .row a{color:var(--ink);font-weight:600;border-bottom:1px solid var(--ink);padding-bottom:1px}
+
+  /* ---------- 4. выгоды ---------- */
+  .bens{display:grid;gap:14px;margin-top:32px}
+  @media(min-width:760px){.bens{grid-template-columns:1fr 1fr}}
+  .ben{border:1px solid var(--line);border-radius:16px;padding:24px;background:var(--card);transition:border-color .2s,box-shadow .2s}
+  .ben:hover{border-color:var(--line-2);box-shadow:var(--shadow-2)}
+  .ben .ic{width:38px;height:38px;border-radius:11px;background:var(--acc-soft);color:var(--acc);display:grid;place-items:center;margin-bottom:14px}
+  .ben .ic svg{width:19px;height:19px}
+  .ben h3{font-size:16.5px;font-weight:600;letter-spacing:-.015em;margin-bottom:7px}
+  .ben p{font-size:13.8px;line-height:1.6;color:var(--muted)}
+
+  /* ---------- 5. продукт ---------- */
+  .prod{display:grid;gap:32px;margin-top:28px}
+  @media(min-width:900px){.prod{grid-template-columns:1fr .85fr;gap:56px;align-items:start}}
+  .spec{border-top:1px solid var(--line)}
+  .spec div{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.8px}
+  .spec span{color:var(--muted)}
+  .spec b{font-weight:600;text-align:right}
+  .prod-shot .card-shot{padding:10px}
+  .prod-shot figcaption{margin-top:12px;font-size:12.5px;color:var(--muted);line-height:1.5}
+
+  /* ---------- 5.5 цены ---------- */
+  .plans{display:grid;gap:14px;margin-top:28px}
+  @media(min-width:860px){.plans{grid-template-columns:repeat(3,1fr)}}
+  .plan{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:16px;padding:24px;background:var(--card)}
+  .plan-main{border-color:var(--acc);box-shadow:0 18px 40px -34px rgba(230,0,126,.4)}
+  .plan-label{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--muted)}
+  .plan-label em{font-style:normal;font-size:11.5px;color:var(--acc)}
+  .price{font-size:32px;line-height:1.1;font-weight:500;letter-spacing:-.02em;margin-top:14px}
+  .price small{display:block;font-size:12.5px;font-weight:400;letter-spacing:0;color:var(--muted);margin-top:6px;line-height:1.4}
+  .plan ul{list-style:none;display:flex;flex-direction:column;gap:9px;margin:18px 0 22px;padding-top:16px;border-top:1px solid var(--line)}
+  .plan li{display:flex;gap:9px;font-size:13.4px;line-height:1.45;color:var(--muted)}
+  .plan li::before{content:"";flex:0 0 5px;width:5px;height:5px;border-radius:50%;background:var(--line-2);margin-top:8px}
+  .plan-main li::before{background:var(--acc)}
+  .plan .btn{margin-top:auto}
+  .plans-note{margin-top:16px;font-size:12.8px;color:var(--muted)}
+  .plans-note a{color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:1px}
+
+  /* ---------- 6. доверие ---------- */
+  .trust{background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .trust-grid{display:grid;gap:14px;margin-top:28px}
+  @media(min-width:760px){.trust-grid{grid-template-columns:repeat(3,1fr)}}
+  .trust-item{border:1px solid var(--line);border-radius:14px;padding:22px;background:var(--bg)}
+  .trust-item b{display:block;font-size:15px;font-weight:600;margin-bottom:6px}
+  .trust-item p{font-size:13.4px;line-height:1.55;color:var(--muted)}
+
+  /* ---------- 7. faq ---------- */
+  .faq{display:grid;gap:10px;margin-top:28px;max-width:820px}
+  details{border:1px solid var(--line);border-radius:14px;background:var(--card);overflow:hidden;transition:border-color .2s,box-shadow .2s}
+  details:hover{border-color:var(--line-2)}
+  details[open]{border-color:var(--line-2);box-shadow:0 16px 36px -30px rgba(17,16,21,.35)}
+  summary{list-style:none;cursor:pointer;padding:17px 20px;font-size:14.8px;font-weight:500;display:flex;align-items:center;gap:12px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";margin-left:auto;color:var(--muted);font-weight:400;font-size:20px;line-height:1}
+  details[open] summary::after{content:"–"}
+  details p{padding:0 20px 18px;font-size:13.9px;line-height:1.62;color:var(--muted);max-width:64ch}
+
+  /* ---------- 8. финальный cta ---------- */
+  .final{background:var(--ink);color:#fff}
+  .final .wrap{padding-top:56px;padding-bottom:56px;display:grid;gap:26px;align-items:center}
+  @media(min-width:820px){.final .wrap{grid-template-columns:1fr auto;padding-top:64px;padding-bottom:64px}}
+  .final h2{color:#fff;max-width:20ch}
+  .final p{margin-top:12px;font-size:14.8px;line-height:1.6;color:#b6b3bf;max-width:44ch}
+  .final .cta-row{margin-top:24px}
+  .final .btn-line{background:transparent;border-color:rgba(255,255,255,.26);color:#fff}
+  .final .btn-line:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+
+  /* ---------- 9. футер ---------- */
+  footer{background:var(--ink);color:#8f8b98;padding:0 0 40px;font-size:12.5px}
+  footer .wrap{border-top:1px solid rgba(255,255,255,.1);padding-top:26px}
+  .frow{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;align-items:center}
+  .fbrand{display:flex;align-items:center;gap:8px;color:#fff;font-weight:600;font-size:14px}
+  .fbrand img{width:22px;height:22px;filter:brightness(0) invert(1)}
+  .fnav{display:flex;flex-wrap:wrap;gap:6px 18px}
+  .fnav a{transition:color .16s}
+  .fnav a:hover{color:#fff}
+  .legal{margin-top:20px;line-height:1.7;max-width:80ch}
+  .legal a{text-decoration:underline;text-underline-offset:2px}
+  .legal a:hover{color:#fff}
+</style>
+</head>
+<body>
+
+<header><div class="wrap hrow">
+  <a class="brand" href="#top"><img src="../logo.png" alt="ClientsLab">ClientsLab</a>
+  <nav class="nav"><a href="#examples">Примеры</a><a href="#benefits">Что даёт</a><a href="#inside">Что входит</a><a href="#pricing">Цены</a><a href="#faq">Вопросы</a></nav>
+  <span class="price-chip mono">от 9 900 ₽</span>
+  <div class="hcta"><a class="btn btn-primary" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Написать</a></div>
+</div></header>
+
+<main id="top">
+
+  <!-- 1. заголовок + утп -->
+  <section class="hero">
+    <div class="wrap hgrid">
+      <div>
+        <div class="label-row"><b>сайт с онлайн-записью</b><span>·</span><span>запуск за 2 дня</span></div>
+        <h1>Клиент выбирает время сам</h1>
+        <p class="lead">Страница салона или барбершопа с записью онлайн: человек выбирает услугу, мастера и время, а заявка <b>сразу приходит вам в Telegram</b>. Без звонков, переписки и потерянных записей.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#examples">Посмотреть примеры</a>
+          <a class="btn btn-line" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Обсудить мою студию</a>
+        </div>
+        <div class="hero-note">
+          <span>9 900 ₽ разово</span>
+          <span>без комиссии с записей</span>
+          <span>оплата после просмотра</span>
+        </div>
+      </div>
+      <div class="card-shot">
+        <img src="../img/hero-salon.jpg" alt="Сайт салона с онлайн-записью" width="860" height="1580">
+        <div class="shot-meta"><b>пример · салон «Алиса»</b><span>мобильный вид</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. факты -->
+  <div class="usp"><div class="wrap">
+    <div class="usp-item"><b class="mono">2 дня</b><span>от заявки до готового сайта</span></div>
+    <div class="usp-item"><b class="mono">24/7</b><span>запись идёт без вас</span></div>
+    <div class="usp-item"><b class="mono">0 ₽</b><span>комиссия с каждой записи</span></div>
+    <div class="usp-item"><b class="mono">1 раз</b><span>оплата за сам сайт</span></div>
+  </div></div>
+
+  <!-- 3. социальное доказательство: живые примеры -->
+  <section id="examples">
+    <div class="wrap">
+      <div class="proof-head">
+        <div>
+          <div class="kicker"><b>работает прямо сейчас</b></div>
+          <h2>Два живых сайта — откройте с телефона</h2>
+          <p class="sec-lead">Выберите услугу, мастера и время — увидите ровно то, что увидит ваш клиент.</p>
+        </div>
+      </div>
+      <div class="items">
+        <div class="item">
+          <img src="../img/card-salon.jpg" alt="Салон «Алиса»" width="1080" height="1350" loading="lazy">
+          <div class="item-body">
+            <b>Салон «Алиса»</b>
+            <small>Калуга · стрижки, ногти, косметология</small>
+            <div class="row"><span class="mono">6 услуг · 5 кресел</span><a href="https://beauty.clientslab.ru/" target="_blank" rel="noreferrer">Открыть</a></div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="../img/card-barber.jpg" alt="Барбершоп «Бритва»" width="1080" height="1350" loading="lazy">
+          <div class="item-body">
+            <b>Барбершоп «Бритва»</b>
+            <small>Подольск · стрижка, борода, бритьё</small>
+            <div class="row"><span class="mono">6 услуг · 4 кресла</span><a href="https://barber.clientslab.ru/" target="_blank" rel="noreferrer">Открыть</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. выгоды -->
+  <section id="benefits" class="sec-tight">
+    <div class="wrap">
+      <div class="kicker"><b>что это меняет</b></div>
+      <h2>Выгода не в сайте, а в том, что перестаёт болеть</h2>
+      <div class="bens">
+        <div class="ben">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <h3>Меньше переписки в директе</h3>
+          <p>Клиент видит цены и свободное время сам, поэтому не спрашивает «а сколько стоит» и «а есть ли на субботу».</p>
+        </div>
+        <div class="ben">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+          <h3>Заявки не теряются ночью</h3>
+          <p>Человек записался в 23:40 — заявка уже у вас в Telegram. Утром вы не пишете «извините, не увидел».</p>
+        </div>
+        <div class="ben">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/><path d="m9 15 2 2 4-4"/></svg></div>
+          <h3>Запись без вашего участия</h3>
+          <p>Клиент сам выбирает услугу, мастера и время. Занятые часы закрыты — накладок в графике не будет.</p>
+        </div>
+        <div class="ben">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div>
+          <h3>Сайт как приложение</h3>
+          <p>Открывается с телефона и ставится на главный экран. Цены и услуги меняете сами, без программиста.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. продукт -->
+  <section id="inside" class="sec-tight">
+    <div class="wrap">
+      <div class="kicker"><b>что входит</b></div>
+      <h2>Одна страница, в которой есть всё для записи</h2>
+      <div class="prod">
+        <div>
+          <div class="spec">
+            <div><span>Страница студии</span><b>услуги, цены, работы, адрес</b></div>
+            <div><span>Онлайн-запись</span><b>без ограничений</b></div>
+            <div><span>Заявки</span><b>в Telegram</b></div>
+            <div><span>Админка</span><b>с телефона</b></div>
+            <div><span>Установка на экран</span><b>как приложение</b></div>
+            <div><span>Правки</span><b>первый месяц бесплатно</b></div>
+            <div><span>Срок запуска</span><b>2 дня</b></div>
+          </div>
+          <div class="cta-row">
+            <a class="btn btn-ink" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Собрать мою версию</a>
+          </div>
+        </div>
+        <figure class="prod-shot">
+          <div class="card-shot">
+            <img src="../img/card-barber.jpg" alt="Экран записи барбершопа" width="1080" height="1350" loading="lazy">
+          </div>
+          <figcaption>Так выглядит запись на телефоне: услуга, время, подтверждение. Ни одного лишнего шага.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5.5 цены -->
+  <section id="pricing" class="sec-tight">
+    <div class="wrap">
+      <div class="kicker"><b>цены</b></div>
+      <h2>Сколько стоит</h2>
+      <p class="sec-lead">Одна оплата за сам сайт. Комиссии с записей нет, подписки на год нет.</p>
+      <div class="plans">
+        <div class="plan plan-main">
+          <div class="plan-label"><span>Сайт с записью</span><em>основной</em></div>
+          <div class="price mono">9 900 ₽<small>разово, без подписки</small></div>
+          <ul>
+            <li>Страница студии: услуги, цены, работы, адрес</li>
+            <li>Онлайн-запись без ограничений</li>
+            <li>Заявки приходят в Telegram</li>
+            <li>Админка с телефона</li>
+            <li>Правки первый месяц</li>
+            <li>Запуск за 2 дня</li>
+          </ul>
+          <a class="btn btn-primary btn-block" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Заказать сайт</a>
+        </div>
+        <div class="plan">
+          <div class="plan-label"><span>Сопровождение</span></div>
+          <div class="price mono">599 ₽<small>в месяц, по желанию</small></div>
+          <ul>
+            <li>Правки: услуги, цены, мастера, график</li>
+            <li>Новые разделы и фото</li>
+            <li>Домен и поддержка</li>
+            <li>Если не хотите заниматься сами</li>
+          </ul>
+          <a class="btn btn-line btn-block" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Подключить</a>
+        </div>
+        <div class="plan">
+          <div class="plan-label"><span>Со своим доменом</span></div>
+          <div class="price mono">14 900 ₽<small>разово, домен на ваше имя</small></div>
+          <ul>
+            <li>Всё, что в базовом варианте</li>
+            <li>Свой домен вместо поддомена</li>
+            <li>Настройка почты на домене</li>
+            <li>Домен и доступы остаются у вас</li>
+          </ul>
+          <a class="btn btn-line btn-block" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Обсудить</a>
+        </div>
+      </div>
+      <p class="plans-note">Несколько филиалов, перенос с другого сайта и свои интеграции считаем отдельно. Хотите увидеть свой вариант до оплаты — <a href="../constructor.html">соберите страницу в конструкторе</a>: специальность, цвета, услуги и цены.</p>
+    </div>
+  </section>
+
+  <!-- 6. доверие -->
+  <section class="trust">
+    <div class="wrap">
+      <div class="kicker"><b>условия</b></div>
+      <h2>Без предоплаты и подписок на год</h2>
+      <div class="trust-grid">
+        <div class="trust-item"><b>Оплата после просмотра</b><p>Сначала показываю готовую версию с вашими услугами и ценами. Понравилось — оплачиваете, нет — ничего не должны.</p></div>
+        <div class="trust-item"><b>Сайт и данные — ваши</b><p>Домен оформляется на вас, доступы передаю после запуска. Базу клиентов вы можете забрать с собой.</p></div>
+        <div class="trust-item"><b>Без комиссии с записей</b><p>Сколько записей придёт — всё ваше. Платите один раз за сайт, а не процент с каждого клиента.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. вопросы -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="kicker"><b>вопросы</b></div>
+      <h2>Что обычно спрашивают до запуска</h2>
+      <div class="faq">
+        <details open>
+          <summary>Сколько ждать готовый сайт?</summary>
+          <p>Два дня с момента, когда пришлёте услуги, цены и фото. Если материалы уже собраны — часто получается за сутки.</p>
+        </details>
+        <details>
+          <summary>У меня нет фотографий. Это проблема?</summary>
+          <p>Нет. На время поставлю аккуратные фото, а когда пришлёте свои — заменю. Свои фото мастеров и салона заметно повышают число записей, поэтому сделать их стоит при первой возможности.</p>
+        </details>
+        <details>
+          <summary>Обязательно платить 599 ₽ каждый месяц?</summary>
+          <p>Нет. Сайт и запись работают без обслуживания — цены и график вы меняете сами в админке. Обслуживание нужно, если не хотите этим заниматься: правки, новые мастера, домен и поддержка.</p>
+        </details>
+        <details>
+          <summary>Сколько вы берёте с каждой записи?</summary>
+          <p>Нисколько. Нет комиссии и нет платы за клиента. Вы платите за сайт, а не за поток записей.</p>
+        </details>
+        <details>
+          <summary>Как проходит оплата?</summary>
+          <p>Переводом после того, как увидели готовый сайт. Чек формируется в приложении «Мой налог» и приходит вам на почту или в мессенджер.</p>
+        </details>
+        <details>
+          <summary>Вы работаете только в одном городе?</summary>
+          <p>По всей России. Всё общение в Telegram, материалы присылаете файлами — встречаться не нужно.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. финальный призыв -->
+  <section class="final">
+    <div class="wrap">
+      <div>
+        <h2>Покажу пример под вашу сферу</h2>
+        <p>Напишите, что за студия и в каком городе — пришлю похожий сайт и скажу, что понадобится для запуска. Это бесплатно и ни к чему не обязывает.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Написать в Telegram</a>
+          <a class="btn btn-line" href="mailto:biber78788@gmail.com">Написать на почту</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- 9. футер -->
+<footer>
+  <div class="wrap">
+    <div class="frow">
+      <a class="fbrand" href="#top"><img src="../logo.png" alt="">ClientsLab</a>
+      <nav class="fnav">
+        <a href="#examples">Примеры</a>
+        <a href="#inside">Что входит</a>
+        <a href="#pricing">Цены</a>
+        <a href="#faq">Вопросы</a>
+        <a href="../constructor.html">Конструктор</a>
+        <a href="https://t.me/biberbiber11" target="_blank" rel="noreferrer">Telegram</a>
+      </nav>
+      <span>clientslab.ru</span>
+    </div>
+    <p class="legal">
+      Исполнитель: Левин Дмитрий Андреевич, плательщик налога на профессиональный доход (самозанятый). ИНН 500909474900.
+      E-mail: biber78788@gmail.com · тел.: +7 910 448-95-65.<br>
+      <a href="/offer/">Публичная оферта</a> · <a href="/privacy/">Политика обработки персональных данных</a>
+    </p>
+    <p class="legal" style="margin-top:10px">© 2026 ClientsLab · сайты с онлайн-записью для салонов и барбершопов · по всей России</p>
+  </div>
+</footer>
+
+</body>
+</html>

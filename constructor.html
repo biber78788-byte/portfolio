@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#faf9fa">
+<title>Конструктор сайта — ClientsLab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--bg:#faf9fa;--card:#fff;--ink:#111015;--muted:#6d6b76;--line:#e4e1e8;--line-2:#cfcad6;--acc:#e6007e;--ease:cubic-bezier(.22,1,.36,1)}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+  .skip{position:absolute;left:-9999px;top:8px;z-index:40;background:#fff;border:1px solid var(--line-2);border-radius:10px;padding:10px 14px;font-size:13px}
+  .skip:focus{left:16px}
+  main[id],section[id]{scroll-margin-top:84px}
+
+  header{position:sticky;top:0;z-index:20;background:rgba(250,249,250,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+  .hrow{max-width:1360px;margin:0 auto;padding:0 20px;height:64px;display:flex;align-items:center;gap:14px}
+  .brand{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:600;letter-spacing:-.01em}
+  .brand img{width:22px;height:22px}
+  .hsep{width:1px;height:20px;background:var(--line-2)}
+  .htitle{font-size:13.5px;color:var(--muted)}
+  .hspacer{margin-left:auto}
+  .hlink{font-size:13.5px;color:var(--muted);padding:8px 0;border-bottom:1px solid transparent;transition:color .16s,border-color .16s}
+  .hlink:hover{color:var(--ink);border-color:var(--ink)}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:600;
+    padding:12px 20px;border-radius:12px;border:1px solid transparent;cursor:pointer;
+    transition:transform .16s var(--ease),background .18s var(--ease),border-color .18s,box-shadow .18s,color .18s}
+  .btn svg{width:16px;height:16px;flex:0 0 16px}
+  .btn-primary{color:#fff;background:linear-gradient(180deg,#ef1f8b,#e6007e);
+    box-shadow:0 1px 1px rgba(255,255,255,.26) inset,0 10px 22px -16px rgba(17,16,21,.55)}
+  .btn-primary:hover{transform:translateY(-2px);background:linear-gradient(180deg,#f4369a,#ea0081)}
+  .btn-primary:active{transform:translateY(0) scale(.985)}
+  .btn-line{background:var(--card);border-color:var(--line-2);color:var(--ink);box-shadow:0 1px 2px rgba(17,16,21,.04)}
+  .btn-line:hover{border-color:var(--ink);transform:translateY(-2px)}
+  .btn-line:active{transform:translateY(0) scale(.985)}
+  .btn-sm{padding:9px 14px;font-size:13px;border-radius:10px}
+  .btn:focus-visible,.field:focus-visible,.sw:focus-visible,.svc-del:focus-visible,.add-svc:focus-visible,.open:focus-visible{
+    outline:none;box-shadow:0 0 0 3px rgba(230,0,126,.25),0 0 0 1px var(--acc)}
+
+  .shell{max-width:1360px;margin:0 auto;padding:28px 20px 64px;display:grid;gap:28px}
+  @media(min-width:1040px){.shell{grid-template-columns:minmax(0,1fr) 480px;gap:40px;align-items:start;padding-top:36px}}
+
+  .intro h1{font-size:clamp(24px,3vw,32px);line-height:1.14;letter-spacing:-.02em;font-weight:600;text-wrap:balance}
+  .intro p{margin-top:8px;font-size:14.5px;color:var(--muted);max-width:56ch}
+
+  .group{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:20px;margin-top:14px}
+  .group > .ghead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
+  .group h2{font-size:14px;font-weight:600;letter-spacing:-.01em}
+  .group .ghint{font-size:12px;color:var(--muted)}
+
+  .grid-2{display:grid;gap:12px}
+  @media(min-width:560px){.grid-2{grid-template-columns:1fr 1fr}}
+  .field-wrap{display:flex;flex-direction:column;gap:6px}
+  .field-wrap.full{grid-column:1/-1}
+  label{font-size:12.5px;color:var(--muted)}
+  .field{width:100%;height:42px;padding:0 12px;border:1px solid var(--line-2);border-radius:10px;background:#fff;
+    font-size:14px;color:var(--ink);transition:border-color .16s,box-shadow .16s}
+  .field:hover{border-color:#b9b3c2}
+  select.field{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236d6b76' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
+
+  .colors{display:grid;gap:14px}
+  @media(min-width:560px){.colors{grid-template-columns:1fr 1fr}}
+  .color-box{display:flex;flex-direction:column;gap:10px}
+  .color-top{display:flex;align-items:center;gap:10px}
+  input[type=color]{width:38px;height:38px;padding:0;border:1px solid var(--line-2);border-radius:10px;background:#fff;cursor:pointer}
+  input[type=color]::-webkit-color-swatch-wrapper{padding:3px}
+  input[type=color]::-webkit-color-swatch{border:none;border-radius:7px}
+  .color-hex{font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.02em}
+  .sw-row{display:flex;gap:8px;flex-wrap:wrap}
+  .sw{width:24px;height:24px;border-radius:8px;border:1px solid rgba(17,16,21,.14);cursor:pointer;padding:0;transition:transform .16s var(--ease)}
+  .sw:hover{transform:translateY(-1px)}
+  .sw[aria-pressed=true]{box-shadow:0 0 0 2px #fff,0 0 0 3px var(--ink)}
+
+  .services{display:flex;flex-direction:column;gap:8px}
+  .svc-row{display:grid;grid-template-columns:minmax(0,1fr) 106px 92px 34px;gap:8px;align-items:center}
+  .svc-row input{height:38px;padding:0 10px;border:1px solid var(--line-2);border-radius:9px;font-size:13.5px;background:#fff;width:100%;min-width:0}
+  .svc-row input:focus-visible{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(230,0,126,.18)}
+  .svc-del{width:34px;height:34px;border-radius:9px;border:1px solid var(--line-2);background:#fff;color:var(--muted);cursor:pointer;
+    display:grid;place-items:center;transition:color .16s,border-color .16s,background .16s}
+  .svc-del:hover{color:#c0243c;border-color:#e7b6bd;background:#fdf4f5}
+  .svc-del svg{width:15px;height:15px}
+  .svc-head{display:grid;grid-template-columns:minmax(0,1fr) 106px 92px 34px;gap:8px;font-size:11.5px;color:var(--muted);padding:0 2px}
+  .add-svc{margin-top:10px;width:100%;height:40px;border:1px dashed var(--line-2);border-radius:10px;background:transparent;
+    font-size:13.5px;color:var(--muted);cursor:pointer;transition:border-color .16s,color .16s,background .16s}
+  .add-svc:hover{border-color:var(--ink);color:var(--ink);background:#fff}
+
+  .form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;align-items:center}
+  .status{font-size:12.5px;color:var(--muted);margin-top:10px;min-height:18px}
+
+  .stage{min-width:0}
+  @media(min-width:1040px){.stage{position:sticky;top:88px}}
+  .stage-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px}
+  .stage-head h2{font-size:14px;font-weight:600}
+  .stage-head span{font-size:12px;color:var(--muted)}
+  .frame{border:1px solid var(--line);border-radius:18px;background:var(--card);padding:8px;
+    box-shadow:0 32px 64px -48px rgba(17,16,21,.4),0 2px 6px -3px rgba(17,16,21,.1)}
+  .frame iframe{display:block;width:100%;height:660px;border:none;border-radius:12px;background:#fff}
+  @media(max-height:820px){.frame iframe{height:560px}}
+  .stage-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+  .stage-actions .btn{flex:1 1 0;min-width:150px}
+  .stage-note{font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.5}
+
+  @media(max-width:760px){
+    .hsep,.htitle,.hlink{display:none}
+    .hrow{height:60px;padding:0 16px;gap:10px}
+    .shell{padding:20px 16px 48px}
+    .group{padding:16px}
+    .svc-row,.svc-head{grid-template-columns:minmax(0,1fr) 82px 74px 32px;gap:6px}
+    .frame iframe{height:520px}
+  }
+  @media(prefers-reduced-motion:reduce){.btn,.btn:hover,.btn:active,.sw{transition:none;transform:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#form">Перейти к форме</a>
+
+<header>
+  <div class="hrow">
+    <a class="brand" href="./"><img src="logo.png" alt="">ClientsLab</a>
+    <span class="hsep"></span>
+    <span class="htitle">Конструктор сайта</span>
+    <span class="hspacer"></span>
+    <a class="hlink" href="./">Готовый сайт</a>
+    <a class="btn btn-line btn-sm" id="copyTop" href="#" role="button">Скопировать ссылку</a>
+  </div>
+</header>
+
+<main class="shell">
+  <div class="col-form">
+    <div class="intro">
+      <h1>Соберите сайт своей студии</h1>
+      <p>Выберите специальность, два цвета и услуги с ценами. Справа сразу открывается настоящая страница — так её увидит клиент.</p>
+    </div>
+
+    <form id="form" autocomplete="off" aria-label="Настройки сайта">
+      <section class="group">
+        <div class="ghead"><h2>Студия</h2><span class="ghint">основа страницы</span></div>
+        <div class="grid-2">
+          <div class="field-wrap full">
+            <label for="spec">Специальность</label>
+            <select class="field" id="spec" name="spec"></select>
+          </div>
+          <div class="field-wrap">
+            <label for="name">Название</label>
+            <input class="field" id="name" name="studio-name" maxlength="30" autocomplete="organization" spellcheck="false" data-bind="name">
+          </div>
+          <div class="field-wrap">
+            <label for="city">Город</label>
+            <input class="field" id="city" name="studio-city" maxlength="24" autocomplete="address-level2" data-bind="city">
+          </div>
+          <div class="field-wrap full">
+            <label for="phone">Телефон или ссылка на Telegram</label>
+            <input class="field" id="phone" name="studio-phone" type="tel" maxlength="60" autocomplete="tel" spellcheck="false" data-bind="phone">
+          </div>
+        </div>
+      </section>
+
+      <section class="group">
+        <div class="ghead"><h2>Цвета</h2><span class="ghint">основной и второй</span></div>
+        <div class="colors">
+          <div class="color-box">
+            <div class="color-top">
+              <input type="color" id="primary" value="#e6007e" data-bind="primary" aria-label="Основной цвет">
+              <div>
+                <div style="font-size:13px;font-weight:500">Основной</div>
+                <div class="color-hex mono" id="primaryHex">#E6007E</div>
+              </div>
+            </div>
+            <div class="sw-row" id="primarySw" role="group" aria-label="Готовые основные цвета"></div>
+          </div>
+          <div class="color-box">
+            <div class="color-top">
+              <input type="color" id="secondary" value="#f2c6d8" data-bind="secondary" aria-label="Второй цвет">
+              <div>
+                <div style="font-size:13px;font-weight:500">Второй</div>
+                <div class="color-hex mono" id="secondaryHex">#F2C6D8</div>
+              </div>
+            </div>
+            <div class="sw-row" id="secondarySw" role="group" aria-label="Готовые вторые цвета"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="group">
+        <div class="ghead"><h2>Услуги и цены</h2><span class="ghint">до 12 позиций</span></div>
+        <div class="svc-head" aria-hidden="true"><span>Услуга</span><span>Цена, ₽</span><span>Время</span><span></span></div>
+        <div class="services" id="services"></div>
+        <button type="button" class="add-svc" id="addSvc">Добавить услугу</button>
+      </section>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-line" id="reset">Вернуть пример</button>
+        <a class="btn btn-primary" id="open" href="view.html" target="_blank" rel="noopener">Открыть страницу</a>
+      </div>
+      <p class="status" id="status" aria-live="polite"></p>
+    </form>
+  </div>
+
+  <aside class="stage">
+    <div class="stage-head"><h2>Предпросмотр</h2><span>живая страница</span></div>
+    <div class="frame"><iframe id="preview" src="view.html" title="Предпросмотр сайта студии" loading="lazy"></iframe></div>
+    <div class="stage-actions">
+      <a class="btn btn-line btn-sm" id="open2" href="view.html" target="_blank" rel="noopener">Открыть в новой вкладке</a>
+      <button type="button" class="btn btn-line btn-sm" id="copy">Скопировать ссылку</button>
+    </div>
+    <p class="stage-note">Ссылка ведёт на эту же страницу с вашими настройками — её можно отправить клиенту или открыть на телефоне.</p>
+  </aside>
+</main>
+
+<script>
+(function () {
+  var PRESETS = {
+    barber: { label: 'Барбершоп', name: 'Бритва', city: 'Подольск', phone: '+7 999 123-45-67', primary: '#1f1b16', secondary: '#d9b46a',
+      services: [{ n: 'Мужская стрижка', p: '1800', d: '45 мин' }, { n: 'Стрижка машинкой', p: '1200', d: '30 мин' }, { n: 'Оформление бороды', p: '900', d: '30 мин' }, { n: 'Королевское бритьё', p: '1500', d: '40 мин' }] },
+    beauty: { label: 'Салон красоты', name: 'Алиса', city: 'Калуга', phone: '+7 910 448-95-65', primary: '#e6007e', secondary: '#f2c6d8',
+      services: [{ n: 'Женская стрижка', p: '2400', d: '60 мин' }, { n: 'Окрашивание в один тон', p: '5500', d: '2 часа' }, { n: 'Маникюр с покрытием', p: '2200', d: '90 мин' }, { n: 'Укладка', p: '1900', d: '45 мин' }] },
+    nails: { label: 'Ногтевая студия', name: 'Ноготь', city: 'Москва', phone: '+7 999 200-10-20', primary: '#8c3f57', secondary: '#ecd7cd',
+      services: [{ n: 'Маникюр с гель-лаком', p: '2500', d: '90 мин' }, { n: 'Педикюр', p: '3200', d: '90 мин' }, { n: 'Снятие покрытия', p: '500', d: '30 мин' }, { n: 'Дизайн', p: '300', d: '15 мин' }] },
+    massage: { label: 'Массаж', name: 'Тише', city: 'Санкт-Петербург', phone: '+7 921 300-40-50', primary: '#2f6b5f', secondary: '#cfe5dd',
+      services: [{ n: 'Классический массаж', p: '3500', d: '60 мин' }, { n: 'Спина и шея', p: '2000', d: '30 мин' }, { n: 'Лимфодренаж', p: '5200', d: '90 мин' }, { n: 'Массаж стоп', p: '1800', d: '30 мин' }] },
+    tattoo: { label: 'Тату-студия', name: 'Линия', city: 'Екатеринбург', phone: '+7 912 500-60-70', primary: '#242424', secondary: '#d8cfc0',
+      services: [{ n: 'Консультация', p: '0', d: '30 мин' }, { n: 'Тату до 10 см', p: '8000', d: '2 часа' }, { n: 'Сеанс 3 часа', p: '15000', d: '3 часа' }, { n: 'Перекрытие', p: '12000', d: '3 часа' }] },
+    cosmetology: { label: 'Косметология', name: 'Кожа', city: 'Казань', phone: '+7 987 600-70-80', primary: '#9a5b4f', secondary: '#f0e0d6',
+      services: [{ n: 'Чистка лица', p: '4500', d: '60 мин' }, { n: 'Пилинг', p: '3800', d: '45 мин' }, { n: 'Массаж лица', p: '2400', d: '30 мин' }, { n: 'Уход по типу кожи', p: '3900', d: '60 мин' }] }
+  };
+
+  var SWATCHES = ['#1f1b16', '#e6007e', '#8c3f57', '#2f6b5f', '#9a5b4f', '#3b4a86'];
+  var TINTS = ['#d9b46a', '#f2c6d8', '#ecd7cd', '#cfe5dd', '#f0e0d6', '#d8cfc0'];
+
+  var state = { spec: 'beauty', name: '', city: '', phone: '', primary: '', secondary: '', services: [] };
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var statusEl = $('#status');
+  var form = $('#form');
+  var svcWrap = $('#services');
+  var frame = $('#preview');
+  var openA = $('#open');
+  var open2 = $('#open2');
+
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  Object.keys(PRESETS).forEach(function (key) {
+    var o = document.createElement('option');
+    o.value = key; o.textContent = PRESETS[key].label;
+    $('#spec').appendChild(o);
+  });
+
+  function encodeState() {
+    var payload = {
+      spec: state.spec, name: state.name, city: state.city, phone: state.phone,
+      p: state.primary, s: state.secondary, services: state.services
+    };
+    return btoa(unescape(encodeURIComponent(JSON.stringify(payload))))
+      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+
+  function pageUrl() {
+    return new URL('view.html?d=' + encodeState(), location.href).href;
+  }
+
+  var timer = null;
+  var lastUrl = '';
+  function update() {
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      var url = pageUrl();
+      if (url === lastUrl) return;
+      lastUrl = url;
+      frame.src = url;
+      openA.href = url;
+      open2.href = url;
+    }, 320);
+  }
+
+  function renderSwatches(box, list, target) {
+    box.innerHTML = '';
+    list.forEach(function (color) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'sw';
+      b.style.background = color;
+      b.setAttribute('aria-label', color);
+      b.setAttribute('aria-pressed', String(state[target].toLowerCase() === color.toLowerCase()));
+      b.addEventListener('click', function () {
+        state[target] = color;
+        $('#' + target).value = color;
+        syncLabels();
+        renderSwatches(box, list, target);
+        update();
+      });
+      box.appendChild(b);
+    });
+  }
+
+  function syncLabels() {
+    $('#primaryHex').textContent = state.primary.toUpperCase();
+    $('#secondaryHex').textContent = state.secondary.toUpperCase();
+  }
+
+  function serviceRow(s, i) {
+    var row = document.createElement('div');
+    row.className = 'svc-row';
+    row.innerHTML =
+      '<input name="service-name" maxlength="40" aria-label="Услуга ' + (i + 1) + '" value="' + esc(s.n) + '" data-f="n">' +
+      '<input name="service-price" maxlength="12" inputmode="numeric" aria-label="Цена услуги ' + (i + 1) + '" value="' + esc(s.p) + '" data-f="p">' +
+      '<input name="service-duration" maxlength="12" aria-label="Длительность услуги ' + (i + 1) + '" value="' + esc(s.d) + '" data-f="d">' +
+      '<button type="button" class="svc-del" aria-label="Удалить услугу ' + (i + 1) + '">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>';
+
+    row.querySelectorAll('input').forEach(function (inp) {
+      inp.addEventListener('input', function () {
+        state.services[i][inp.dataset.f] = inp.value;
+        update();
+      });
+    });
+    row.querySelector('.svc-del').addEventListener('click', function () {
+      if (state.services.length === 1) state.services[0] = { n: '', p: '', d: '' };
+      else state.services.splice(i, 1);
+      renderRows();
+      update();
+    });
+    return row;
+  }
+
+  function renderRows() {
+    svcWrap.innerHTML = '';
+    state.services.forEach(function (s, i) { svcWrap.appendChild(serviceRow(s, i)); });
+  }
+
+  function applyPreset(key, force) {
+    var p = PRESETS[key];
+    if (force) { state.name = p.name; state.city = p.city; state.phone = p.phone; }
+    state.spec = key;
+    state.primary = p.primary;
+    state.secondary = p.secondary;
+    state.services = p.services.map(function (s) { return { n: s.n, p: s.p, d: s.d }; });
+    $('#name').value = state.name;
+    $('#city').value = state.city;
+    $('#phone').value = state.phone;
+    $('#primary').value = state.primary;
+    $('#secondary').value = state.secondary;
+    syncLabels();
+    renderSwatches($('#primarySw'), SWATCHES, 'primary');
+    renderSwatches($('#secondarySw'), TINTS, 'secondary');
+    renderRows();
+    update();
+  }
+
+  $('#spec').addEventListener('change', function (e) {
+    var prev = PRESETS[state.spec];
+    var keep = state.name !== prev.name || state.city !== prev.city || state.phone !== prev.phone;
+    applyPreset(e.target.value, !keep);
+  });
+
+  form.addEventListener('input', function (e) {
+    var t = e.target;
+    if (t.dataset.bind) {
+      if (t.dataset.bind === 'name') state.name = t.value.slice(0, 30);
+      else if (t.dataset.bind === 'city') state.city = t.value.slice(0, 24);
+      else if (t.dataset.bind === 'phone') state.phone = t.value.slice(0, 60);
+      else state[t.dataset.bind] = t.value;
+      if (t.type === 'color') syncLabels();
+      update();
+    }
+  });
+  form.addEventListener('submit', function (e) { e.preventDefault(); });
+
+  $('#addSvc').addEventListener('click', function () {
+    if (state.services.length >= 12) { statusEl.textContent = 'Больше 12 услуг не поместится на одну страницу.'; return; }
+    state.services.push({ n: '', p: '', d: '' });
+    renderRows();
+    var last = svcWrap.lastElementChild && svcWrap.lastElementChild.querySelector('input');
+    if (last) last.focus();
+    update();
+  });
+
+  $('#reset').addEventListener('click', function () {
+    applyPreset($('#spec').value, true);
+    statusEl.textContent = 'Вернули пример для этой специальности.';
+  });
+
+  function copyLink(btn) {
+    var url = pageUrl();
+    var done = function () { statusEl.textContent = 'Ссылка скопирована: её можно отправить клиенту.'; };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done, fallback);
+    } else fallback();
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = url;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      ta.remove();
+      statusEl.textContent = ok ? 'Ссылка скопирована: её можно отправить клиенту.' : 'Скопируйте адрес из строки браузера после «Открыть страницу».';
+    }
+    if (btn) btn.blur();
+  }
+
+  $('#copy').addEventListener('click', function () { copyLink(this); });
+  $('#copyTop').addEventListener('click', function (e) { e.preventDefault(); copyLink(this); });
+
+  applyPreset('beauty', true);
+})();
+</script>
+</body>
+</html>
