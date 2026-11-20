@@ -205,7 +205,7 @@
 
       <div class="form-actions">
         <button type="button" class="btn btn-line" id="reset">Вернуть пример</button>
-        <a class="btn btn-primary" id="open" href="view.html" target="_blank" rel="noopener">Открыть страницу</a>
+        <a class="btn btn-primary" id="open" href="demo-preview/?d=#/" target="_blank" rel="noopener">Открыть страницу</a>
       </div>
       <p class="status" id="status" aria-live="polite"></p>
     </form>
@@ -213,9 +213,9 @@
 
   <aside class="stage">
     <div class="stage-head"><h2>Предпросмотр</h2><span>живая страница</span></div>
-    <div class="frame"><iframe id="preview" src="view.html" title="Предпросмотр сайта студии" loading="lazy"></iframe></div>
+    <div class="frame"><iframe id="preview" src="demo-preview/?d=#/" title="Предпросмотр сайта студии" loading="lazy"></iframe></div>
     <div class="stage-actions">
-      <a class="btn btn-line btn-sm" id="open2" href="view.html" target="_blank" rel="noopener">Открыть в новой вкладке</a>
+      <a class="btn btn-line btn-sm" id="open2" href="demo-preview/?d=#/" target="_blank" rel="noopener">Открыть в новой вкладке</a>
       <button type="button" class="btn btn-line btn-sm" id="copy">Скопировать ссылку</button>
     </div>
     <p class="stage-note">Ссылка ведёт на эту же страницу с вашими настройками — её можно отправить клиенту или открыть на телефоне.</p>
@@ -272,8 +272,9 @@
       .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   }
 
+  /* Превью и ссылка клиенту — та же демка, только с его данными. */
   function pageUrl() {
-    return new URL('view.html?d=' + encodeState(), location.href).href;
+    return new URL('demo-preview/?d=' + encodeState() + '#/', location.href).href;
   }
 
   var timer = null;
