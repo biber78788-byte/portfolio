@@ -224,7 +224,7 @@
 
   /* ---------- 10. доработка: навигация, оттенки секций, детали ---------- */
   :root{--bg-2:#fdf1f7;--sand:#f6efe8;--plum:#1d0714;--acc-ink:#a8005c}
-  .hrow{height:auto;min-height:62px;flex-wrap:wrap;padding:8px 0;gap:10px}
+  .hrow{height:auto;min-height:62px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px;gap:10px}
   .nav{display:flex;flex:1 1 100%;min-width:0;order:3;gap:0 15px;margin-left:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;font-size:12.5px;letter-spacing:-.01em;padding:0 0 3px}
   .nav::-webkit-scrollbar{display:none}
   .nav a{display:flex;align-items:center;flex:0 0 auto;padding:3px 0;white-space:nowrap}
@@ -235,7 +235,7 @@
   @media(max-width:899px){header{position:static}section[id],div[id]{scroll-margin-top:12px}}
   @media(max-width:480px){.hero-note{flex-direction:column;align-items:flex-start;gap:7px}.hero .cta-row .btn{width:100%}}
   @media(min-width:900px){
-    .hrow{height:70px;min-height:0;flex-wrap:nowrap;padding:0;gap:22px}
+    .hrow{height:70px;min-height:0;flex-wrap:nowrap;padding-top:0;padding-bottom:0;gap:22px}
     .nav{order:0;width:auto;margin-left:auto;overflow:visible;gap:22px;font-size:13.5px;padding-bottom:0}
     .nav a::before{display:block}
   }
