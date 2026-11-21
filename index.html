@@ -276,7 +276,14 @@
   .plan-main:hover{border-color:var(--acc)}
   .trust-item{position:relative}
   .trust-item b::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--acc);margin-right:8px;vertical-align:2px}
-  .final{border-top:1px solid rgba(230,0,126,.35)}
+  /* мягкий переход со светлого фона на тёмный финальный блок */
+  .final{
+    border-top:0;padding-top:220px;
+    background:linear-gradient(180deg,#faf9fa 0%,#f9f4f7 9%,#f0dfe8 22%,#e2c8d6 34%,#cba7ba 46%,#a97f94 58%,#7f5c6f 70%,#55394a 80%,#33202c 89%,#1f131a 95%,#111015 100%) top/100% 220px no-repeat,var(--ink);
+  }
+  @media(max-width:759px){
+    .final{padding-top:170px;background:linear-gradient(180deg,#faf9fa 0%,#f9f4f7 9%,#f0dfe8 22%,#e2c8d6 34%,#cba7ba 46%,#a97f94 58%,#7f5c6f 70%,#55394a 80%,#33202c 89%,#1f131a 95%,#111015 100%) top/100% 170px no-repeat,var(--ink)}
+  }
   .final .kicker{color:#b6b3bf}
 
   /* FAQ: заголовок слева, вопросы справа */
