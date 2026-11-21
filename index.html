@@ -224,16 +224,19 @@
 
   /* ---------- 10. доработка: навигация, оттенки секций, детали ---------- */
   :root{--bg-2:#fdf1f7;--sand:#f6efe8;--plum:#1d0714;--acc-ink:#a8005c}
-  .hrow{height:auto;min-height:68px;flex-wrap:wrap;padding:10px 0;gap:14px}
-  .nav{display:flex;flex:1 1 100%;min-width:0;order:3;gap:6px 16px;margin-left:0;flex-wrap:wrap;font-size:13px;padding-bottom:2px}
-  .nav a{display:flex;align-items:center;padding:4px 0}
-  .nav a::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--line-2);margin-right:7px;transition:background .16s}
+  .hrow{height:auto;min-height:62px;flex-wrap:wrap;padding:8px 0;gap:10px}
+  .nav{display:flex;flex:1 1 100%;min-width:0;order:3;gap:0 15px;margin-left:0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;font-size:12.5px;letter-spacing:-.01em;padding:0 0 3px}
+  .nav::-webkit-scrollbar{display:none}
+  .nav a{display:flex;align-items:center;flex:0 0 auto;padding:3px 0;white-space:nowrap}
+  .nav a::before{content:"";display:none;width:4px;height:4px;border-radius:50%;background:var(--line-2);margin-right:7px;transition:background .16s}
   .nav a:hover{color:var(--acc-ink);border-color:var(--acc-ink)}
   .nav a:hover::before{background:var(--acc)}
   .hcta{margin-left:auto}
+  @media(max-width:899px){header{position:static}section[id],div[id]{scroll-margin-top:12px}}
   @media(min-width:900px){
     .hrow{height:70px;min-height:0;flex-wrap:nowrap;padding:0;gap:22px}
     .nav{order:0;width:auto;margin-left:auto;overflow:visible;gap:22px;font-size:13.5px;padding-bottom:0}
+    .nav a::before{display:block}
   }
 
   .slots{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:26px;padding-top:18px;border-top:1px dashed var(--line-2)}
