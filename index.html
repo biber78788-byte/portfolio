@@ -277,13 +277,9 @@
   .trust-item{position:relative}
   .trust-item b::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--acc);margin-right:8px;vertical-align:2px}
   /* мягкий переход со светлого фона на тёмный финальный блок */
-  .final{
-    border-top:0;padding-top:220px;
-    background:linear-gradient(180deg,#faf9fa 0%,#f9f4f7 9%,#f0dfe8 22%,#e2c8d6 34%,#cba7ba 46%,#a97f94 58%,#7f5c6f 70%,#55394a 80%,#33202c 89%,#1f131a 95%,#111015 100%) top/100% 220px no-repeat,var(--ink);
-  }
-  @media(max-width:759px){
-    .final{padding-top:170px;background:linear-gradient(180deg,#faf9fa 0%,#f9f4f7 9%,#f0dfe8 22%,#e2c8d6 34%,#cba7ba 46%,#a97f94 58%,#7f5c6f 70%,#55394a 80%,#33202c 89%,#1f131a 95%,#111015 100%) top/100% 170px no-repeat,var(--ink)}
-  }
+  /* мягкий переход: тёмный блок начинается со скругления и плавного свечения */
+  .final{position:relative;border-top:0;background:var(--ink);border-radius:36px 36px 0 0;margin-top:28px;padding-top:36px;box-shadow:0 -24px 48px -32px rgba(17,16,21,.45)}
+  @media(max-width:759px){.final{border-radius:26px 26px 0 0;margin-top:22px;padding-top:26px}}
   .final .kicker{color:#b6b3bf}
 
   /* FAQ: заголовок слева, вопросы справа */
